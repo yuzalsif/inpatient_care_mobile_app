@@ -1,0 +1,2 @@
+class InvalidCredentialsInpatientException implements Exception {}
+class UserAuthenticationRequiredInpatientException implements Exception {}
