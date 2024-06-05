@@ -7,7 +7,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  inpatient_api:
+    path: ../inpatient_api
+  domain_models:
+    path: ../domain_models
 dev_dependencies:
   flutter_test:
     sdk: flutter
