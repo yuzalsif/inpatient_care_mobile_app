@@ -1,31 +1,67 @@
 import 'dart:convert';
 
-import 'models/models.dart';
+import 'package:http/http.dart' as http;
 
-class InpantientApi {
-  Future<UserRM> signIn ({required String username,required String password, required String url}) {
-    final signInRequest = SignInRequestRM(userCredentials: UserCredentialsRM(username: username, password: password, url: url));
-    var bytes = utf8.encode('${signInRequest.userCredentials.username}:${signInRequest.userCredentials.password}');
+import 'models/models.dart';
+import 'base_url_storage.dart';
+import 'models/exceptions.dart';
+import 'url_builder.dart';
+
+class InpatientApi {
+  late UrlBuilder _urlBuilder;
+
+  InpatientApi() {
+    _initUrlBuilder();
+  }
+
+  _initUrlBuilder() async {
+    _urlBuilder = await UrlBuilder.create();
+  }
+
+  Future<UserRM> signIn({
+    required String username,
+    required String password,
+    required String baseUrl,
+  }) async {
+    var signInUrl = '';
+    final signInRequest = SignInRequestRM(
+        userCredentials: UserCredentialsRM(
+      username: username,
+      password: password,
+      url: baseUrl,
+    ));
+
+    var bytes = utf8.encode(
+        '${signInRequest.userCredentials.username}:${signInRequest.userCredentials.password}');
     var authenticationToken = base64.encode(bytes);
     var headersList = {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
       "Authorization": "Basic $authenticationToken"
     };
-    
-    var url = Uri.parse('https://icare-student.dhis2.udsm.ac.tz/openmrs/ws/rest/v1/session?v=custom%3A(authenticated%2Cuser%3A(privileges%3A(uuid%2Cname%2Croles)%2Croles%3A(uuid%2Cname)))');
 
-    var req = http.Request('GET', url);
-    req.headers.addAll(headersList);
+    final String cachedBaseUrl = await BaseUrlStorage.baseUrl;
 
-    var res = await req.send();
-    final resBody = await res.stream.bytesToString();
-
-    if (res.statusCode >= 200 && res.statusCode < 300) {
-      print(resBody);
+    if (cachedBaseUrl == BaseUrlStorage.noCachedBaseUrl ||
+        cachedBaseUrl != signInRequest.userCredentials.url) {
+      BaseUrlStorage.setBaseUrl(signInRequest.userCredentials.url);
+      _urlBuilder = await UrlBuilder.create();
     }
-    else {
-      print(res.reasonPhrase);
+
+    signInUrl = _urlBuilder.buildSignInUrl();
+
+    var request = http.Request('GET', Uri.parse(signInUrl));
+    request.headers.addAll(headersList);
+
+    var response = await request.send();
+    final resBody = await response.stream.bytesToString();
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      print(resBody);
+      final Map<String, dynamic> responseData = jsonDecode(resBody);
+      return UserRM.fromJson(responseData);
+    } else {
+      throw InvalidCredentialsInpatientException();
     }
   }
 }
