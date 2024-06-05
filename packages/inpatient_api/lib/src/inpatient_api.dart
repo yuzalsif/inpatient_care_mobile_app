@@ -59,7 +59,11 @@ class InpatientApi {
     if (response.statusCode >= 200 && response.statusCode < 300) {
       print(resBody);
       final Map<String, dynamic> responseData = jsonDecode(resBody);
-      return UserRM.fromJson(responseData);
+      return UserRM(
+          sessionId: responseData['sessionId'] as String,
+          username: responseData['user']['username'] as String,
+          userUid: responseData['user']['uuid'] as String,
+          baseUrl: _urlBuilder.baseUrl);
     } else {
       throw InvalidCredentialsInpatientException();
     }
