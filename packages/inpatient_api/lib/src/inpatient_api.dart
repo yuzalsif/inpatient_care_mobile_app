@@ -62,7 +62,7 @@ class InpatientApi {
       return UserRM(
           sessionId: responseData['sessionId'] as String,
           username: responseData['user']['username'] as String,
-          userUid: responseData['user']['uuid'] as String,
+          userUuid: responseData['user']['uuid'] as String,
           baseUrl: _urlBuilder.baseUrl);
     } else {
       throw InvalidCredentialsInpatientException();
