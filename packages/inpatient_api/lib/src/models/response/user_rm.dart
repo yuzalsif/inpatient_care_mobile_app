@@ -9,5 +9,5 @@ class UserRM {
     required this.username,
     required this.userUid,
     required this.baseUrl
-  })
+  });
 }
