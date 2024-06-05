@@ -11,6 +11,7 @@ dependencies:
     path: ../inpatient_api
   domain_models:
     path: ../domain_models
+  flutter_secure_storage: ^9.2.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
