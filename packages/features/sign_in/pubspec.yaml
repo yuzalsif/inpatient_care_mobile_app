@@ -8,6 +8,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  form_fields:
+    path: ../../form_fields
 
 dev_dependencies:
   flutter_test:
