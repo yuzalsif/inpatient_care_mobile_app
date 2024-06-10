@@ -68,4 +68,16 @@ class InpatientApi {
       throw InvalidCredentialsInpatientException();
     }
   }
+
+  Future<void> signOut() async {
+    final url = _urlBuilder.buildSignOutUrl();
+
+    Map<String, String> headersList = {};
+    var logOutUrl = Uri.parse(url);
+
+    var request = http.Request('DELETE', logOutUrl);
+    request.headers.addAll(headersList);
+
+    var res = await request.send();
+  }
 }

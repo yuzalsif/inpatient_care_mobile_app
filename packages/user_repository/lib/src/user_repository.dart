@@ -83,4 +83,10 @@ class UserRepository {
   Future<String?> getUserSessionId() {
     return _secureStorage.getUserSessionId();
   }
+
+  Future<void> signOut() async {
+    await _remoteApi.signOut();
+    await _secureStorage.deleteUserInfo();
+    _userSubject.add(null);
+  }
 }

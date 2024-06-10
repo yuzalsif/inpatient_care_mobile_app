@@ -25,4 +25,9 @@ class UrlBuilder {
     _checkForBaseUrlBeforeBuildAnyUrl();
     return '$baseUrl/openmrs/ws/rest/v1/session?v=custom:(authenticated,user:(privileges:(uuid,name,roles),roles:(uuid,name)))';
   }
+
+  String buildSignOutUrl() {
+    _checkForBaseUrlBeforeBuildAnyUrl();
+    return '$baseUrl/openmrs/ws/rest/v1/session';
+  }
 }
