@@ -8,8 +8,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.1.5
+  user_repository:
+    path: ../../user_repository
   form_fields:
     path: ../../form_fields
+  domain_models:
+    path: ../../domain_models
 
 dev_dependencies:
   flutter_test:
