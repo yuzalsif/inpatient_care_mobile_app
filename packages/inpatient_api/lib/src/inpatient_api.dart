@@ -78,6 +78,6 @@ class InpatientApi {
     var request = http.Request('DELETE', logOutUrl);
     request.headers.addAll(headersList);
 
-    var res = await request.send();
+    await request.send();
   }
 }
