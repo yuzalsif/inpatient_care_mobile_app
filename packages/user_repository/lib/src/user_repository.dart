@@ -9,19 +9,18 @@ class UserRepository {
   UserRepository({
     required InpatientApi remoteApi,
     required UserSecureStorage secureStorage,
-  }) : _remoteApi = remoteApi,
-       _secureStorage = secureStorage;
+  })  : _remoteApi = remoteApi,
+        _secureStorage = secureStorage;
 
   final UserSecureStorage _secureStorage;
   final InpatientApi _remoteApi;
   final BehaviorSubject<User?> _userSubject = BehaviorSubject();
 
-
   Future<void> signIn({
     required String username,
     required String password,
     required String baseUrl,
-}) async {
+  }) async {
     try {
       final apiUser = await _remoteApi.signIn(
         username: username,
@@ -30,11 +29,10 @@ class UserRepository {
       );
 
       await _secureStorage.upsertUserInfo(
-        username: apiUser.username,
-        sessionId: apiUser.sessionId,
-        baseUrl: apiUser.baseUrl,
-        userUuid: apiUser.userUuid
-      );
+          username: apiUser.username,
+          sessionId: apiUser.sessionId,
+          baseUrl: apiUser.baseUrl,
+          userUuid: apiUser.userUuid);
 
       final domainUser = apiUser.toDomainModel();
 
@@ -44,5 +42,45 @@ class UserRepository {
     } on InvalidCredentialsInpatientException catch (_) {
       throw InvalidCredentialsException();
     }
+  }
+
+  Stream<User?> getUser() async* {
+    if (!_userSubject.hasValue) {
+      final userInfo = await Future.wait([
+        _secureStorage.getUsername(),
+        _secureStorage.getUserBaseUrl(),
+        _secureStorage.getUserSessionId(),
+        _secureStorage.getUserUuid(),
+      ]);
+
+      final username = userInfo[0];
+      final userBaseUrl = userInfo[1];
+      final userSessionId = userInfo[2];
+      final userUid = userInfo[3];
+
+      if (userBaseUrl != null &&
+          username != null &&
+          userSessionId != null &&
+          userUid != null) {
+        _userSubject.add(
+          User(
+            username: username,
+            userUuid: userUid,
+            sessionId: userSessionId,
+            baseUrl: userBaseUrl,
+          ),
+        );
+      } else {
+        _userSubject.add(
+          null,
+        );
+      }
+    }
+
+    yield* _userSubject.stream;
+  }
+
+  Future<String?> getUserSessionId() {
+    return _secureStorage.getUserSessionId();
   }
 }
