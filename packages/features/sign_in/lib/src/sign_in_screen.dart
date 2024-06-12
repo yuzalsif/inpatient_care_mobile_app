@@ -1,6 +1,5 @@
 import 'package:component_library/component_library.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_fields/form_fields.dart';
 import 'package:sign_in/src/sign_in_cubit.dart';
@@ -10,13 +9,9 @@ class SignInScreen extends StatelessWidget {
   const SignInScreen({
     required this.userRepository,
     required this.onSignInSuccess,
-    this.onForgotMyPasswordTap,
-    this.onSignUpTap,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
-  final VoidCallback? onSignUpTap;
-  final VoidCallback? onForgotMyPasswordTap;
   final VoidCallback onSignInSuccess;
   final UserRepository userRepository;
 
@@ -27,47 +22,31 @@ class SignInScreen extends StatelessWidget {
         userRepository: userRepository,
       ),
       child: SignInView(
-        onSignUpTap: onSignUpTap,
         onSignInSuccess: onSignInSuccess,
-        onForgotMyPasswordTap: onForgotMyPasswordTap,
       ),
     );
   }
 }
 
-@visibleForTesting
 class SignInView extends StatelessWidget {
   const SignInView({
     required this.onSignInSuccess,
-    this.onSignUpTap,
-    this.onForgotMyPasswordTap,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
-  final VoidCallback? onSignUpTap;
-  final VoidCallback? onForgotMyPasswordTap;
   final VoidCallback onSignInSuccess;
 
   @override
   Widget build(BuildContext context) {
-    final l10n = SignInLocalizations.of(context);
     return GestureDetector(
       onTap: () => _releaseFocus(context),
       child: Scaffold(
-        appBar: AppBar(
-          systemOverlayStyle: SystemUiOverlayStyle.light,
-          title: Text(
-            l10n.appBarTitle,
-          ),
-        ),
         body: Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(
               horizontal: Spacing.mediumLarge,
             ),
             child: _SignInForm(
-              onSignUpTap: onSignUpTap,
-              onForgotMyPasswordTap: onForgotMyPasswordTap,
               onSignInSuccess: onSignInSuccess,
             ),
           ),
@@ -82,13 +61,9 @@ class SignInView extends StatelessWidget {
 class _SignInForm extends StatefulWidget {
   const _SignInForm({
     required this.onSignInSuccess,
-    this.onSignUpTap,
-    this.onForgotMyPasswordTap,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
-  final VoidCallback? onSignUpTap;
-  final VoidCallback? onForgotMyPasswordTap;
   final VoidCallback onSignInSuccess;
 
   @override
@@ -96,16 +71,17 @@ class _SignInForm extends StatefulWidget {
 }
 
 class _SignInFormState extends State<_SignInForm> {
-  final _emailFocusNode = FocusNode();
+  final _usernameFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
+  final _urlFocusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
     final cubit = context.read<SignInCubit>();
-    _emailFocusNode.addListener(() {
-      if (!_emailFocusNode.hasFocus) {
-        cubit.onEmailUnfocused();
+    _usernameFocusNode.addListener(() {
+      if (!_usernameFocusNode.hasFocus) {
+        cubit.onUsernameUnfocused();
       }
     });
     _passwordFocusNode.addListener(() {
@@ -113,21 +89,26 @@ class _SignInFormState extends State<_SignInForm> {
         cubit.onPasswordUnfocused();
       }
     });
+    _urlFocusNode.addListener(() {
+      if (!_urlFocusNode.hasFocus) {
+        cubit.onUrlUnfocused();
+      }
+    });
   }
 
   @override
   void dispose() {
-    _emailFocusNode.dispose();
+    _usernameFocusNode.dispose();
     _passwordFocusNode.dispose();
+    _urlFocusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final l10n = SignInLocalizations.of(context);
     return BlocConsumer<SignInCubit, SignInState>(
       listenWhen: (oldState, newState) =>
-      oldState.submissionStatus != newState.submissionStatus,
+          oldState.submissionStatus != newState.submissionStatus,
       listener: (context, state) {
         if (state.submissionStatus == SubmissionStatus.success) {
           widget.onSignInSuccess();
@@ -135,7 +116,7 @@ class _SignInFormState extends State<_SignInForm> {
         }
 
         final hasSubmissionError = state.submissionStatus ==
-            SubmissionStatus.genericError ||
+                SubmissionStatus.genericError ||
             state.submissionStatus == SubmissionStatus.invalidCredentialsError;
 
         if (hasSubmissionError) {
@@ -143,11 +124,10 @@ class _SignInFormState extends State<_SignInForm> {
             ..hideCurrentSnackBar()
             ..showSnackBar(
               state.submissionStatus == SubmissionStatus.invalidCredentialsError
-                  ? SnackBar(
-                content: Text(
-                  l10n.invalidCredentialsErrorMessage,
-                ),
-              )
+                  ? const SnackBar(
+                      content: Text(
+                          'Invalid email and/ username'),
+                    )
                   : const GenericErrorSnackBar(),
             );
         }
@@ -155,7 +135,7 @@ class _SignInFormState extends State<_SignInForm> {
       builder: (context, state) {
         final emailError = state.email.invalid ? state.email.error : null;
         final passwordError =
-        state.password.invalid ? state.password.error : null;
+            state.password.invalid ? state.password.error : null;
         final isSubmissionInProgress =
             state.submissionStatus == SubmissionStatus.inProgress;
 
@@ -163,7 +143,7 @@ class _SignInFormState extends State<_SignInForm> {
         return Column(
           children: <Widget>[
             TextField(
-              focusNode: _emailFocusNode,
+              focusNode: _usernameFocusNode,
               onChanged: cubit.onEmailChanged,
               textInputAction: TextInputAction.next,
               autocorrect: false,
@@ -176,8 +156,8 @@ class _SignInFormState extends State<_SignInForm> {
                 errorText: emailError == null
                     ? null
                     : (emailError == EmailValidationError.empty
-                    ? l10n.emailTextFieldEmptyErrorMessage
-                    : l10n.emailTextFieldInvalidErrorMessage),
+                        ? l10n.emailTextFieldEmptyErrorMessage
+                        : l10n.emailTextFieldInvalidErrorMessage),
               ),
             ),
             const SizedBox(
@@ -197,8 +177,8 @@ class _SignInFormState extends State<_SignInForm> {
                 errorText: passwordError == null
                     ? null
                     : (passwordError == PasswordValidationError.empty
-                    ? l10n.passwordTextFieldEmptyErrorMessage
-                    : l10n.passwordTextFieldInvalidErrorMessage),
+                        ? l10n.passwordTextFieldEmptyErrorMessage
+                        : l10n.passwordTextFieldInvalidErrorMessage),
               ),
             ),
             TextButton(
@@ -206,22 +186,22 @@ class _SignInFormState extends State<_SignInForm> {
                 l10n.forgotMyPasswordButtonLabel,
               ),
               onPressed:
-              isSubmissionInProgress ? null : widget.onForgotMyPasswordTap,
+                  isSubmissionInProgress ? null : widget.onForgotMyPasswordTap,
             ),
             const SizedBox(
               height: Spacing.small,
             ),
             isSubmissionInProgress
                 ? ExpandedElevatedButton.inProgress(
-              label: l10n.signInButtonLabel,
-            )
+                    label: l10n.signInButtonLabel,
+                  )
                 : ExpandedElevatedButton(
-              onTap: cubit.onSubmit,
-              label: l10n.signInButtonLabel,
-              icon: const Icon(
-                Icons.login,
-              ),
-            ),
+                    onTap: cubit.onSubmit,
+                    label: l10n.signInButtonLabel,
+                    icon: const Icon(
+                      Icons.login,
+                    ),
+                  ),
             const SizedBox(
               height: Spacing.xxLarge,
             ),

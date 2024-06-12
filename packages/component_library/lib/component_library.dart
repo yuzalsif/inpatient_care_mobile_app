@@ -5,3 +5,4 @@ export 'src/round_form_button.dart';
 export 'src/search_bar.dart';
 export 'src/special_field.dart';
 export 'src/theme/spacing.dart';
+export 'src/generic_error_snack_bar.dart';
