@@ -125,17 +125,18 @@ class _SignInFormState extends State<_SignInForm> {
             ..showSnackBar(
               state.submissionStatus == SubmissionStatus.invalidCredentialsError
                   ? const SnackBar(
-                      content: Text(
-                          'Invalid email and/ username'),
+                      content: Text('Invalid email and/ username'),
                     )
                   : const GenericErrorSnackBar(),
             );
         }
       },
       builder: (context, state) {
-        final emailError = state.email.invalid ? state.email.error : null;
+        final userNameError =
+            state.username.isNotValid ? state.username.error : null;
         final passwordError =
-            state.password.invalid ? state.password.error : null;
+            state.password.isNotValid ? state.password.error : null;
+        final urlError = state.baseUrl.isNotValid ? state.baseUrl.error : null;
         final isSubmissionInProgress =
             state.submissionStatus == SubmissionStatus.inProgress;
 
@@ -144,20 +145,20 @@ class _SignInFormState extends State<_SignInForm> {
           children: <Widget>[
             TextField(
               focusNode: _usernameFocusNode,
-              onChanged: cubit.onEmailChanged,
+              onChanged: cubit.onUsernameChanged,
               textInputAction: TextInputAction.next,
               autocorrect: false,
               decoration: InputDecoration(
-                suffixIcon: const Icon(
-                  Icons.alternate_email,
-                ),
+                // suffixIcon: const Icon(
+                //   Icons.user,
+                // ),
                 enabled: !isSubmissionInProgress,
-                labelText: l10n.emailTextFieldLabel,
-                errorText: emailError == null
+                labelText: 'Username',
+                errorText: userNameError == null
                     ? null
-                    : (emailError == EmailValidationError.empty
-                        ? l10n.emailTextFieldEmptyErrorMessage
-                        : l10n.emailTextFieldInvalidErrorMessage),
+                    : (userNameError == UsernameValidationError.empty
+                        ? 'Your username can not be empty.'
+                        : null),
               ),
             ),
             const SizedBox(
@@ -173,47 +174,46 @@ class _SignInFormState extends State<_SignInForm> {
                   Icons.password,
                 ),
                 enabled: !isSubmissionInProgress,
-                labelText: l10n.passwordTextFieldLabel,
+                labelText: 'Password',
                 errorText: passwordError == null
                     ? null
                     : (passwordError == PasswordValidationError.empty
-                        ? l10n.passwordTextFieldEmptyErrorMessage
-                        : l10n.passwordTextFieldInvalidErrorMessage),
+                        ? 'Your password can not be empty.'
+                        : null),
               ),
             ),
-            TextButton(
-              child: Text(
-                l10n.forgotMyPasswordButtonLabel,
+            const SizedBox(
+              height: Spacing.large,
+            ),
+            TextField(
+              focusNode: _urlFocusNode,
+              onChanged: cubit.onUrlChanged,
+              textInputAction: TextInputAction.next,
+              autocorrect: false,
+              decoration: InputDecoration(
+                enabled: !isSubmissionInProgress,
+                labelText: 'Url',
+                errorText: urlError == null
+                    ? null
+                    : (urlError == UrlValidationError.empty
+                    ? 'Base url can not be empty.'
+                    : 'Invalid Url'),
               ),
-              onPressed:
-                  isSubmissionInProgress ? null : widget.onForgotMyPasswordTap,
             ),
             const SizedBox(
               height: Spacing.small,
             ),
             isSubmissionInProgress
                 ? ExpandedElevatedButton.inProgress(
-                    label: l10n.signInButtonLabel,
+                    label: 'Sign In',
                   )
                 : ExpandedElevatedButton(
                     onTap: cubit.onSubmit,
-                    label: l10n.signInButtonLabel,
+                    label: 'Sign In',
                     icon: const Icon(
                       Icons.login,
                     ),
                   ),
-            const SizedBox(
-              height: Spacing.xxLarge,
-            ),
-            Text(
-              l10n.signUpOpeningText,
-            ),
-            TextButton(
-              child: Text(
-                l10n.signUpButtonLabel,
-              ),
-              onPressed: isSubmissionInProgress ? null : widget.onSignUpTap,
-            ),
           ],
         );
       },
