@@ -14,11 +14,10 @@ Map<String, PageBuilder> buildRoutingTable({
           fullscreenDialog: true,
           child: Builder(
             builder: (context) {
-              // return SignInScreen(
-              //   userRepository: userRepository,
-              //   onSignInSuccess: () {},
-              // );
-              return const NurseTreatmentSheetScreen();
+              return SignInScreen(
+                userRepository: userRepository,
+                onSignInSuccess: () {},
+              );
             },
           ),
         ),
