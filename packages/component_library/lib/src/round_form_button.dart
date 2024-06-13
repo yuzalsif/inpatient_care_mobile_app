@@ -12,7 +12,7 @@ class RoundFormButton extends StatelessWidget {
     return icon != null ? ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        minimumSize: const Size(225, 50),
+        minimumSize: const Size(225, 45),
         backgroundColor: const Color(0xFF3579F8),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
@@ -26,7 +26,7 @@ class RoundFormButton extends StatelessWidget {
             text,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 22,
+              fontSize: 18,
             ),
           ),
           const SizedBox(width: 8.0), // Space between text and icon
@@ -41,7 +41,7 @@ class RoundFormButton extends StatelessWidget {
     :ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        minimumSize: const Size(225, 50),
+        minimumSize: const Size(225, 45),
         backgroundColor: const Color(0xFF3579F8), // Button expands to full width
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0), // Border radius of 32
@@ -50,7 +50,7 @@ class RoundFormButton extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: const TextStyle(color: Colors.white, fontSize: 22),
+        style: const TextStyle(color: Colors.white, fontSize: 18),
       ),
     );
   }
