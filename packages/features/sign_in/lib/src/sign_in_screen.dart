@@ -1,4 +1,5 @@
 import 'package:component_library/component_library.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_fields/form_fields.dart';
@@ -149,9 +150,8 @@ class _SignInFormState extends State<_SignInForm> {
               textInputAction: TextInputAction.next,
               autocorrect: false,
               decoration: InputDecoration(
-                // suffixIcon: const Icon(
-                //   Icons.user,
-                // ),
+                border: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8))),
                 enabled: !isSubmissionInProgress,
                 labelText: 'Username',
                 errorText: userNameError == null
@@ -162,7 +162,7 @@ class _SignInFormState extends State<_SignInForm> {
               ),
             ),
             const SizedBox(
-              height: Spacing.large,
+              height: Spacing.xLarge,
             ),
             TextField(
               focusNode: _passwordFocusNode,
@@ -173,6 +173,8 @@ class _SignInFormState extends State<_SignInForm> {
                 suffixIcon: const Icon(
                   Icons.password,
                 ),
+                border: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8))),
                 enabled: !isSubmissionInProgress,
                 labelText: 'Password',
                 errorText: passwordError == null
@@ -183,7 +185,7 @@ class _SignInFormState extends State<_SignInForm> {
               ),
             ),
             const SizedBox(
-              height: Spacing.large,
+              height: Spacing.xLarge,
             ),
             TextField(
               focusNode: _urlFocusNode,
@@ -191,17 +193,19 @@ class _SignInFormState extends State<_SignInForm> {
               textInputAction: TextInputAction.next,
               autocorrect: false,
               decoration: InputDecoration(
+                border: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8))),
                 enabled: !isSubmissionInProgress,
                 labelText: 'Url',
                 errorText: urlError == null
                     ? null
                     : (urlError == UrlValidationError.empty
-                    ? 'Base url can not be empty.'
-                    : 'Invalid Url'),
+                        ? 'Base url can not be empty.'
+                        : 'Invalid Url'),
               ),
             ),
             const SizedBox(
-              height: Spacing.small,
+              height: Spacing.xLarge,
             ),
             isSubmissionInProgress
                 ? ExpandedElevatedButton.inProgress(

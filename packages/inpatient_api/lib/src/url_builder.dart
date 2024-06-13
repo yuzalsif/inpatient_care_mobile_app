@@ -18,12 +18,13 @@ class UrlBuilder {
     assert(
         (_noBaseUrl == baseUrl),
         'Consider sign-in user first to get the base url'
-        'no base url was provided');
+        ' no base url was provided');
   }
 
   String buildSignInUrl() {
-    _checkForBaseUrlBeforeBuildAnyUrl();
-    return '$baseUrl/openmrs/ws/rest/v1/session?v=custom:(authenticated,user:(privileges:(uuid,name,roles),roles:(uuid,name)))';
+    // _checkForBaseUrlBeforeBuildAnyUrl();
+    //TODO: Use [baseUrl] property instead of hard coded one
+    return 'https://icare-student.dhis2.udsm.ac.tz/openmrs/ws/rest/v1/session?v=custom:(authenticated,user:(privileges:(uuid,name,roles),roles:(uuid,name)))';
   }
 
   String buildSignOutUrl() {

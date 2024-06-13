@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class ExpandedElevatedButton extends StatelessWidget {
   static const double _elevatedButtonHeight = 48;
+  static const double _elevatedButtonScaleFactor = 0.5;
 
   const ExpandedElevatedButton({
     required this.label,
@@ -36,6 +37,9 @@ class ExpandedElevatedButton extends StatelessWidget {
           ? ElevatedButton.icon(
         onPressed: onTap,
         label: Text(
+          style: const TextStyle(
+            fontSize: 18 //TODO: Create a const for this zz
+          ),
           label,
         ),
         icon: icon,

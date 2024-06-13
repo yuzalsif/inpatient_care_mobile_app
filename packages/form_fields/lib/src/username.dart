@@ -11,7 +11,9 @@ class Username extends FormzInput<String, UsernameValidationError> {
 
   @override
   UsernameValidationError? validator(String value) {
-    return value.isEmpty ? UsernameValidationError.empty : null;
+    return isPure
+        ? null
+        : (value.isEmpty ? UsernameValidationError.empty : null);
   }
 }
 

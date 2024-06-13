@@ -40,10 +40,10 @@ class SignInCubit extends Cubit<SignInState> {
   void onUsernameUnfocused() {
     final previousScreenState = state;
     final previousUsernameState = previousScreenState.username;
-    final previousEmailValue = previousUsernameState.value;
+    final previousUsernameValue = previousUsernameState.value;
 
     final newUsernameState = Username.validated(
-      previousEmailValue,
+      previousUsernameValue,
     );
     final newScreenState = previousScreenState.copyWith(
       username: newUsernameState,
@@ -86,7 +86,7 @@ class SignInCubit extends Cubit<SignInState> {
 
   void onUrlChanged(String newValue) {
     final previousScreenState = state;
-    final previousUrlState = previousScreenState.username;
+    final previousUrlState = previousScreenState.baseUrl;
     final shouldValidate = previousUrlState.isNotValid;
     final newUrlState = shouldValidate
         ? Url.validated(
@@ -105,7 +105,7 @@ class SignInCubit extends Cubit<SignInState> {
 
   void onUrlUnfocused() {
     final previousScreenState = state;
-    final previousUrlState = previousScreenState.username;
+    final previousUrlState = previousScreenState.baseUrl;
     final previousUrlValue = previousUrlState.value;
 
     final newUrlState = Url.validated(

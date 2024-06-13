@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'package:domain_models/domain_models.dart';
@@ -8,9 +9,9 @@ import 'package:user_repository/src/user_secure_storage.dart';
 class UserRepository {
   UserRepository({
     required InpatientApi remoteApi,
-    required UserSecureStorage secureStorage,
+    @visibleForTesting UserSecureStorage? secureStorage,
   })  : _remoteApi = remoteApi,
-        _secureStorage = secureStorage;
+        _secureStorage = secureStorage ?? const UserSecureStorage();
 
   final UserSecureStorage _secureStorage;
   final InpatientApi _remoteApi;
