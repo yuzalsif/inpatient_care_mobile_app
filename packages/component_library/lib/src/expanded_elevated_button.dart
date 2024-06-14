@@ -15,13 +15,13 @@ class ExpandedElevatedButton extends StatelessWidget {
     required String label,
     Key? key,
   }) : this(
-    label: label,
-    icon: Transform.scale(
-      scale: 0.5,
-      child: const CircularProgressIndicator(),
-    ),
-    key: key,
-  );
+          label: label,
+          icon: Transform.scale(
+            scale: 0.5,
+            child: const CircularProgressIndicator(),
+          ),
+          key: key,
+        );
 
   final VoidCallback? onTap;
   final String label;
@@ -35,21 +35,25 @@ class ExpandedElevatedButton extends StatelessWidget {
       width: double.infinity,
       child: icon != null
           ? ElevatedButton.icon(
-        onPressed: onTap,
-        label: Text(
-          style: const TextStyle(
-            fontSize: 18 //TODO: Create a const for this zz
-          ),
-          label,
-        ),
-        icon: icon,
-      )
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF3579F8),
+              ),
+              onPressed: onTap,
+              label: Text(
+                style: const TextStyle(
+                  fontSize: 18, //TODO: Create a const for this zz
+                  color: Colors.white, //TODO: use theme
+                ),
+                label,
+              ),
+              icon: icon,
+            )
           : ElevatedButton(
-        onPressed: onTap,
-        child: Text(
-          label,
-        ),
-      ),
+              onPressed: onTap,
+              child: Text(
+                label,
+              ),
+            ),
     );
   }
 }

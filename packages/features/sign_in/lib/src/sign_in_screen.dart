@@ -47,8 +47,32 @@ class SignInView extends StatelessWidget {
             padding: const EdgeInsets.symmetric(
               horizontal: Spacing.mediumLarge,
             ),
-            child: _SignInForm(
-              onSignInSuccess: onSignInSuccess,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Sign In',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(
+                  height: Spacing.small,
+                ),
+                const Text(
+                  'Welcome back! Please sign in to continue.',
+                  style: TextStyle(
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(
+                  height: Spacing.xxxLarge,
+                ),
+                _SignInForm(
+                  onSignInSuccess: onSignInSuccess,
+                ),
+              ],
             ),
           ),
         ),
@@ -205,7 +229,7 @@ class _SignInFormState extends State<_SignInForm> {
               ),
             ),
             const SizedBox(
-              height: Spacing.xLarge,
+              height: Spacing.xxLarge,
             ),
             isSubmissionInProgress
                 ? ExpandedElevatedButton.inProgress(
@@ -216,6 +240,7 @@ class _SignInFormState extends State<_SignInForm> {
                     label: 'Sign In',
                     icon: const Icon(
                       Icons.login,
+                      color: Colors.white,
                     ),
                   ),
           ],
