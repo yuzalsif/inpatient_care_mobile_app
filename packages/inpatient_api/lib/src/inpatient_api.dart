@@ -80,4 +80,20 @@ class InpatientApi {
 
     await request.send();
   }
+
+  Future<void> createEncounter(EncounterRM encounter, String sessionId) async {
+    final url = _urlBuilder.buildEncounterUrl();
+    var headersList = {
+      'Accept': 'application/json, text/plain, */*',
+      'JSESSIONID': sessionId,
+      'Content-Type': 'application/json'
+    };
+    var encounterUrl = Uri.parse(url);
+
+    var request = http.Request('POST', encounterUrl);
+    request.headers.addAll(headersList);
+    request.body = jsonEncode(encounter.toJson());
+
+    await request.send();
+  }
 }

@@ -31,4 +31,9 @@ class UrlBuilder {
     _checkForBaseUrlBeforeBuildAnyUrl();
     return '$baseUrl/openmrs/ws/rest/v1/session';
   }
+
+  String buildEncounterUrl() {
+    _checkForBaseUrlBeforeBuildAnyUrl();
+    return '$baseUrl/openmrs/ws/rest/v1/encounter';
+  }
 }
