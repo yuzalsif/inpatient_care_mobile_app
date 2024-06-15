@@ -5,11 +5,11 @@ part 'encounter_provider_rm.g.dart';
 
 @JsonSerializable(createFactory: false)
 class EncounterProviderRM{
-  final String encounter;
+  final String provider;
   final String encounterRole;
 
   EncounterProviderRM({
-    required this.encounter,
+    required this.provider,
     required this.encounterRole,
   });
 

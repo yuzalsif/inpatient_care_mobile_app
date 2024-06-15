@@ -1,9 +1,9 @@
 class EncounterProvider {
-  final String encounter;
+  final String provider;
   final String encounterRole;
 
   EncounterProvider({
-    required this.encounter,
+    required this.provider,
     required this.encounterRole,
   });
 }

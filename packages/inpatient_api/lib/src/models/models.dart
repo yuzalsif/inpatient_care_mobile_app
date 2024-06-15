@@ -4,3 +4,4 @@ export 'response/user_rm.dart';
 export 'request/encounter_rm.dart';
 export 'request/ipd_form_rm.dart';
 export 'request/encounter_provider_rm.dart';
+export 'request/observation_rm.dart';

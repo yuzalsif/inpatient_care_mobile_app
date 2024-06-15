@@ -9,6 +9,6 @@ part of 'encounter_provider_rm.dart';
 Map<String, dynamic> _$EncounterProviderRMToJson(
         EncounterProviderRM instance) =>
     <String, dynamic>{
-      'encounter': instance.encounter,
+      'provider': instance.provider,
       'encounterRole': instance.encounterRole,
     };
