@@ -96,4 +96,20 @@ class InpatientApi {
 
     await request.send();
   }
+
+  Future<InpatientPageListRM> getInpatientListPage(
+      int startIndex, String searchTerm) async {
+    final url = Uri.parse(
+        _urlBuilder.buildGetInpatientListPageUrl(startIndex, searchTerm));
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+
+      final inpatientPageList = InpatientPageListRM.fromJson(data);
+      return inpatientPageList;
+    } else {
+      throw Exception('Failed to retrieve data: ${response.statusCode}');
+    }
+  }
+  
 }

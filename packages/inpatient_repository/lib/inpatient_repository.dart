@@ -1,0 +1,1 @@
+export 'src/inpatient_repository.dart';

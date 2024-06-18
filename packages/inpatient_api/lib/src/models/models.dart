@@ -5,3 +5,5 @@ export 'request/encounter_rm.dart';
 export 'request/ipd_form_rm.dart';
 export 'request/encounter_provider_rm.dart';
 export 'request/observation_rm.dart';
+export 'request/inpatient_list_page_rm.dart';
+export  'request/inpatient_rm.dart';

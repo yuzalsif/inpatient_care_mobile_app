@@ -1,16 +1,19 @@
-name: domain_models
+name: inpatient_repository
 description: "A new Flutter package project."
 version: 0.0.1
 homepage:
 
 environment:
-  sdk: '>=3.3.3 <4.0.0'
+  sdk: '>=3.4.1 <4.0.0'
   flutter: ">=1.17.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  equatable: ^2.0.5  
+  inpatient_api:
+    path: ../inpatient_api
+  domain_models:
+    path: ../domain_models  
 
 dev_dependencies:
   flutter_test:

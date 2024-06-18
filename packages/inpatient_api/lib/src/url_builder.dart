@@ -36,4 +36,13 @@ class UrlBuilder {
     _checkForBaseUrlBeforeBuildAnyUrl();
     return '$baseUrl/openmrs/ws/rest/v1/encounter';
   }
+
+String buildGetInpatientListPageUrl(
+    int startIndex, 
+    String searchTerm ,
+  ) {
+    //TODO: Use [baseUrl] property instead of hard coded one
+    return 'https://icare-student.dhis2.udsm.ac.tz/openmrs/ws/rest/v1/icare/visit?OrderBy=ENCOUNTER&orderByDirection=ASC&q=$searchTerm&encounterTypeUuid=e22e39fd-7db2-45e7-80f1-60fa0d5a4378&startIndex=$startIndex&limit=10';
+  }
+
 }

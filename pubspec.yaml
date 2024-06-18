@@ -19,6 +19,8 @@ dependencies:
     path: packages/user_repository
   sign_in:
     path: packages/features/sign_in
+  patient_list:
+    path: packages/features/patient_list  
   domain_models:
     path: packages/domain_models
   component_library:
