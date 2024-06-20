@@ -1,7 +1,5 @@
 import 'package:component_library/component_library.dart';
 import 'package:flutter/material.dart';
-import 'package:inpatient_care_mobile_app/to_be_removed/investigation.dart';
-import 'package:inpatient_care_mobile_app/to_be_removed/summary.dart';
 
 class NurseTreatmentSheetScreen extends StatefulWidget {
   const NurseTreatmentSheetScreen({super.key});

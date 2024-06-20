@@ -18,7 +18,12 @@ Map<String, PageBuilder> buildRoutingTable({
             builder: (context) {
               return SignInScreen(
                 userRepository: userRepository,
-                onSignInSuccess: () {},
+                onSignInSuccess: () {
+                   Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => InpatientListScreen()),
+            );
+                },
               );
             },
           ),
@@ -38,7 +43,7 @@ class _PathConstants {
   const _PathConstants._();
 
   // static String get tabContainerPath => '/';
-  static String get signInPath => '/how';
+  static String get signInPath => '/';
 
-  static String get InpatientListPath => '/';
+  static String get InpatientListPath => '/patient_list';
 }

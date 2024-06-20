@@ -6,18 +6,17 @@ import 'package:inpatient_repository/inpatient_repository.dart';
 import 'package:patient_list/src/inpatient_list_cubit.dart';
 import './patient_detail_temp_screen.dart';
 
+//TODO: code formatting 
 class InpatientListScreen extends StatelessWidget {
-  
-   
   @override
   Widget build(BuildContext context) {
-    final inpatientApi = InpatientApiTemp(urlBuilder: UrlBuilderTemp());
+    final inpatientApi = InpatientApiTemp(urlBuilder: const UrlBuilderTemp());
     final inpatientRepository = InpatientRepository(remoteApi: inpatientApi);
 
-    return  BlocProvider(
-        create: (context) => InpatientCubit(inpatientRepository),
-        child: InpatientList(),
-      );
+    return BlocProvider(
+      create: (context) => InpatientCubit(inpatientRepository),
+      child: InpatientList(),
+    );
   }
 }
 
@@ -27,19 +26,27 @@ class InpatientList extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 48, left: 16, right: 16),
-            child: CustomSearchBar(  onChanged: (searchTerm) {
+            child: CustomSearchBar(
+              onChanged: (searchTerm) {
                 context.read<InpatientCubit>().searchInpatients(searchTerm);
-              },),
-           
+              },
+            ),
+            
+          ),
+          const SizedBox(height: 16,),
+          const Padding(
+            padding: EdgeInsets.only(left: 16),
+            child: Text('Patients', style: TextStyle(fontSize: 16),),
           ),
           Expanded(
             child: BlocBuilder<InpatientCubit, InpatientState>(
               builder: (context, state) {
                 if (state is InpatientLoading) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (state is InpatientLoaded) {
                   return InpatientListView(
                     inpatients: state.inpatients,
@@ -48,10 +55,10 @@ class InpatientList extends StatelessWidget {
                       context.read<InpatientCubit>().loadMoreInpatients();
                     },
                   );
-                }  if (state is InpatientSearching) {
-                  return Center(child: CircularProgressIndicator());
-                } 
-                else if (state is InpatientSearchLoaded) {
+                }
+                if (state is InpatientSearching) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state is InpatientSearchLoaded) {
                   return InpatientListView(
                     inpatients: state.inpatients,
                     hasReachedMax: true,
@@ -60,23 +67,22 @@ class InpatientList extends StatelessWidget {
                 } else if (state is InpatientError) {
                   return Center(child: Text('Error: ${state.message}'));
                 } else if (state is InpatientSearching) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else {
-                  return Center(child: Text('Unknown state.'));
+                  return const Center(child: Text('Unknown state.'));
                 }
               },
             ),
           ),
-          
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Trigger the fetchInpatients method from InpatientCubit
-          context.read<InpatientCubit>().fetchInpatients();
-        },
-        child: Icon(Icons.refresh),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     // Trigger the fetchInpatients method from InpatientCubit
+      //     context.read<InpatientCubit>().fetchInpatients();
+      //   },
+      //   child: Icon(Icons.refresh),
+      // ),
     );
   }
 }
@@ -87,11 +93,11 @@ class InpatientListView extends StatelessWidget {
   final VoidCallback onScrollEnd;
 
   const InpatientListView({
-    Key? key,
+    super.key,
     required this.inpatients,
     required this.hasReachedMax,
     required this.onScrollEnd,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -104,12 +110,12 @@ class InpatientListView extends StatelessWidget {
         return false;
       },
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
         child: ListView.builder(
           itemCount: inpatients.length + (hasReachedMax ? 0 : 1),
           itemBuilder: (context, index) {
             if (index >= inpatients.length) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
             final inpatient = inpatients[index];
             return Column(
@@ -121,8 +127,11 @@ class InpatientListView extends StatelessWidget {
                   inpatient: inpatient,
                   onSelected: (isSelected) {
                     // Handle selection logic here if needed
-                  },),
-                  const SizedBox(height: 12,)
+                  },
+                ),
+                const SizedBox(
+                  height: 12,
+                )
               ],
             );
           },
@@ -131,105 +140,106 @@ class InpatientListView extends StatelessWidget {
     );
   }
 }
+ 
 
-
+ //TODO: to be removed
 class PatientCard extends StatefulWidget {
   final String name;
   final String sex;
   final int age;
- final ValueChanged<bool> onSelected;
- final Inpatient inpatient;
+  final ValueChanged<bool> onSelected;
+  final Inpatient inpatient;
 
-  PatientCard({
-    required this.name,
-    required this.sex,
-    required this.age,
-    required this.onSelected,
-    required this.inpatient
-  });
-
+  PatientCard(
+      {required this.name,
+      required this.sex,
+      required this.age,
+      required this.onSelected,
+      required this.inpatient});
 
   @override
   _PatientCardState createState() => _PatientCardState();
 }
+
 class _PatientCardState extends State<PatientCard> {
   bool isSelected = false;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-     onTap: () {
-       Navigator.push(
+      onTap: () {
+        Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => InpatientDetailScreen(inpatient: widget.inpatient),
+            builder: (context) =>
+                InpatientDetailScreen(inpatient: widget.inpatient),
           ),
         );
       },
-      child: Container(
-        width: double.infinity,
-        padding: EdgeInsets.all(16),
-       
-        decoration: BoxDecoration(
-          
-          color: isSelected ? Color(0xFF3579F8) : Colors.white,
-          borderRadius: BorderRadius.circular(4),
-          
-        ),
-        child: Row(
-          children: [
-            CircleAvatar(
-              radius: 38,
-              backgroundColor: Colors.grey[200],
-              child: Icon(Icons.person, size: 60, color: Colors.grey),
-            ),
-            SizedBox(width: 28),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.name,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: isSelected ? Colors.white : Colors.black,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 6),
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: isSelected ? Color(0xFF3579F8) : Colors.white,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Row(
+            children: [
+              CircleAvatar(
+                radius: 38,
+                backgroundColor: Color(0xFFF2F2F2),
+                child: Icon(Icons.person, size: 60, color: Colors.grey[350]),
+              ),
+              SizedBox(width: 28),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.name,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: isSelected ? Colors.white : Colors.black,
+                    ),
                   ),
-                ),
-                SizedBox(height: 4),
-                Text(
-                  'Sex: ${widget.sex}',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: isSelected ? Colors.white70 : Colors.grey,
+                  SizedBox(height: 4),
+                  Text(
+                    'Sex: ${widget.sex}',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: isSelected ? Colors.white70 : Colors.grey,
+                    ),
                   ),
-                ),
-                SizedBox(height: 4),
-                Text(
-                  'Age: ${widget.age}',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: isSelected ? Colors.white70 : Colors.grey,
+                  SizedBox(height: 4),
+                  Text(
+                    'Age: ${widget.age}',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: isSelected ? Colors.white70 : Colors.grey,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
+//TODO: to be removed
 class CustomSearchBar extends StatelessWidget {
-
- const CustomSearchBar({super.key, 
+  const CustomSearchBar({
+    super.key,
     this.controller,
-     this.onChanged,
- });
+    this.onChanged,
+  });
 
-
- final TextEditingController? controller;
-   final ValueChanged<String>? onChanged;
+  final TextEditingController? controller;
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -237,7 +247,6 @@ class CustomSearchBar extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: const BoxDecoration(
         color: Colors.white,
-       
       ),
       child: TextField(
         controller: controller,

@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:inpatient_api/inpatient_api.dart';
 
-//import 'package:inpatient_api/src/models/request/inpatient_list_page_rm.dart';
 
-//import 'url_builder.dart';
 
+
+//TODO: remove inpatient api temp and merge this methid to inpatient api
 class InpatientApiTemp {
   final UrlBuilderTemp _urlBuilder;
 

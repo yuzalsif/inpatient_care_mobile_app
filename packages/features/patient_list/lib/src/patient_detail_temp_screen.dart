@@ -1,10 +1,13 @@
 import 'package:domain_models/domain_models.dart';
 import 'package:flutter/material.dart';
+import 'package:patient_list/src/nurse_treatment_sheet.dart';
+import 'package:patient_list/src/obsrvation_chart.dart';
 
 class InpatientDetailScreen extends StatelessWidget {
   final Inpatient inpatient;
 
-  const InpatientDetailScreen({Key? key, required this.inpatient}) : super(key: key);
+  const InpatientDetailScreen({Key? key, required this.inpatient})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,11 +16,58 @@ class InpatientDetailScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: const Color(0xFFF5F5F5),
+          title: const Text('Round Form'),
+          actions: [
+            PopupMenuButton<String>(
+              icon: Icon(Icons.more_vert),
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                PopupMenuItem<String>(
+                  value: 'sheets',
+                  child: ListTile(
+                    title: Text('Nurse treatment sheet'),
+                    leading: Icon(Icons.description),
+                  ),
+                ),
+                PopupMenuItem<String>(
+                  value: 'charts',
+                  child: ListTile(
+                    title: Text('Observation chart'),
+                    leading: Icon(Icons.insert_chart),
+                  ),
+                ),
+              ],
+              onSelected: (String value) {
+                // Handle menu item selection
+                switch (value) {
+                  case 'sheets':
+                    Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NurseTreatmentSheet(),
+          ),
+        
+                    );
+                    break;
+                  case 'charts':
+                    Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ObservationChart(),
+          ),
+        
+                    
+                    );
+                    break;
+                }
+              },
+            ),
+          ],
         ),
         backgroundColor: const Color(0xFFF5F5F5),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               PatientDetailCard(
                 name: inpatient.name,
@@ -25,7 +75,9 @@ class InpatientDetailScreen extends StatelessWidget {
                 age: '${inpatient.age}',
                 phoneNumber: inpatient.phoneNumber,
               ),
-            const SizedBox(height: 10,),
+              const SizedBox(
+                height: 10,
+              ),
               const TabBar(
                 labelColor: Colors.black,
                 indicatorColor: Colors.blue,
@@ -37,17 +89,66 @@ class InpatientDetailScreen extends StatelessWidget {
                   Tab(text: 'Investigation'),
                   Tab(text: 'Management'),
                 ],
-               labelPadding: EdgeInsets.symmetric(horizontal: 8.0), // Adjust the padding
+                labelPadding:
+                    EdgeInsets.symmetric(horizontal: 8.0), // Adjust the padding
               ),
-               Expanded(
+              Expanded(
                 child: TabBarView(
                   children: [
-                    Center(child: Column(children: [
-    Image.network('https://drive.google.com/uc?export=download&id=1kjZxZkd4TXjC-95KUNItuG_cSe5Vpnkb',),
-    Text('build data')
-  ],)),
-                    Center(child: Text('Investigation Content')),
-                    Center(child: Text('Management Content')),
+                    Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.network(
+                            'https://drive.google.com/uc?export=download&id=1kjZxZkd4TXjC-95KUNItuG_cSe5Vpnkb',
+                            width: 140,
+                            height: 200,
+                          ),
+                          const Text(
+                              textAlign: TextAlign.center,
+                              'Summary not available yet. Please add a summary to get started'),
+                              SizedBox(height: 24,),
+                          RoundFormButton(
+                              text: 'Add', icon: Icons.add, onPressed: () {})
+                        ],
+                      ),
+                    ),
+                     Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.network(
+                            'https://drive.google.com/uc?export=download&id=1kjZxZkd4TXjC-95KUNItuG_cSe5Vpnkb',
+                            width: 140,
+                            height: 200,
+                          ),
+                          const Text(
+                              textAlign: TextAlign.center,
+                              'Investigation not available yet. Please add investigation to get started'),
+                              SizedBox(height: 24,),
+                          RoundFormButton(
+                              text: 'Add', icon: Icons.add, onPressed: () {})
+                        ],
+                      ),
+                    ),
+                     Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.network(
+                            'https://drive.google.com/uc?export=download&id=1kjZxZkd4TXjC-95KUNItuG_cSe5Vpnkb',
+                            width: 140,
+                            height: 200,
+                          ),
+                          const Text(
+                              textAlign: TextAlign.center,
+                              'Management not available yet. Please add management to get started'),
+                              SizedBox(height: 24,),
+                          RoundFormButton(
+                              text: 'Add', icon: Icons.add, onPressed: () {})
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -117,7 +218,9 @@ class PatientDetailCard extends StatelessWidget {
                     color: Colors.grey,
                   ),
                 ),
-                const SizedBox(height: 4,),
+                const SizedBox(
+                  height: 4,
+                ),
                 Text(
                   'Contacts: $phoneNumber',
                   style: const TextStyle(
@@ -135,8 +238,66 @@ class PatientDetailCard extends StatelessWidget {
 }
 
 Widget _buildSummaryData() {
-  return Column(children: [
-    Image.asset('assets/images/no_data.png'),
-    Text('build data')
-  ],);
+  return Column(
+    children: [Image.asset('assets/images/no_data.png'), Text('build data')],
+  );
+}
+
+class RoundFormButton extends StatelessWidget {
+  final String text;
+  final VoidCallback onPressed;
+  final IconData? icon;
+
+  RoundFormButton(
+      {super.key, required this.text, required this.onPressed, this.icon});
+
+  @override
+  Widget build(BuildContext context) {
+    return icon != null
+        ? ElevatedButton(
+            onPressed: onPressed,
+            style: ElevatedButton.styleFrom(
+              minimumSize: const Size(225, 45),
+              backgroundColor: const Color(0xFF3579F8),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              elevation: 0,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  text,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
+                ),
+                const SizedBox(width: 8.0), // Space between text and icon
+                Icon(
+                  icon,
+                  color: Colors.white, // Predefined icon color
+                  size: 28, // Predefined icon size
+                ),
+              ],
+            ),
+          )
+        : ElevatedButton(
+            onPressed: onPressed,
+            style: ElevatedButton.styleFrom(
+              minimumSize: const Size(225, 45),
+              backgroundColor:
+                  const Color(0xFF3579F8), // Button expands to full width
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0), // Border radius of 32
+              ),
+              elevation: 0, // Set button color to blue
+            ),
+            child: Text(
+              text,
+              style: const TextStyle(color: Colors.white, fontSize: 18),
+            ),
+          );
+  }
 }
