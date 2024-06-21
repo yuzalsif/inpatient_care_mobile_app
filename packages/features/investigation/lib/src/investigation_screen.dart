@@ -42,7 +42,7 @@ class _InvestigationScreenState extends State<InvestigationScreen> {
         const SizedBox(
           height: Spacing.xxLarge,
         ),
-        RoundFormButton(text: "Request", onPressed: () {})
+        RoundFormButton(label: "Request", onPressed: () {})
       ],
     );
   }
