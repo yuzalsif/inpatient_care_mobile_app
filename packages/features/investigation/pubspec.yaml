@@ -11,6 +11,9 @@ dependencies:
   flutter_bloc: ^8.1.6
   form_fields:
     path: ../../form_fields
+  component_library:
+    path: ../../component_library
+
 
 dev_dependencies:
   flutter_test:
