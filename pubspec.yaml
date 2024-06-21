@@ -19,6 +19,8 @@ dependencies:
     path: packages/user_repository
   sign_in:
     path: packages/features/sign_in
+  investigation:
+    path: packages/features/investigation
   patient_list:
     path: packages/features/patient_list  
   domain_models:

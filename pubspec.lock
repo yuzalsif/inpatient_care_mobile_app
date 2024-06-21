@@ -243,6 +243,13 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  investigation:
+    dependency: "direct main"
+    description:
+      path: "packages/features/investigation"
+      relative: true
+    source: path
+    version: "0.0.1"
   js:
     dependency: transitive
     description:
