@@ -38,7 +38,7 @@ class _NurseTreatmentSheetScreenState extends State<NurseTreatmentSheetScreen> {
                     _InputField(label: 'Oral Infusion / Treatment'),
                   ],
                 ),
-                Center(child: RoundFormButton(text: 'Save', onPressed: () {} )),
+                Center(child: RoundFormButton(label: 'Save', onPressed: () {} )),
               ],
             ),
           ),

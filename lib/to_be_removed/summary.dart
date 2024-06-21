@@ -28,7 +28,7 @@ class Summary extends StatelessWidget {
         const SizedBox(
           height: Spacing.xxLarge,
         ),
-        RoundFormButton(text: "Add summary", onPressed: () {})
+        RoundFormButton(label: "Add summary", onPressed: () {})
       ],
     );
   }
