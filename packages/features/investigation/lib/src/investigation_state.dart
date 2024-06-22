@@ -16,13 +16,13 @@ class InvestigationState extends Equatable {
   InvestigationState copyWith({
     InpatientTextField? test,
     InpatientTextField? remarks,
-    String selectedTestResult = '',
+    String? selectedTestResult,
     SubmissionStatus? submissionStatus,
   }) {
     return InvestigationState(
       test: test ?? this.test,
       remarks: remarks ?? this.remarks,
-      selectedTestResult: this.selectedTestResult,
+      selectedTestResult: selectedTestResult ?? this.selectedTestResult,
       submissionStatus: submissionStatus ?? this.submissionStatus,
     );
   }
