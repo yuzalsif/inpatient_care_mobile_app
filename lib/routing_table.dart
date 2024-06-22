@@ -4,6 +4,7 @@ import 'package:patient_list/patient_list.dart';
 
 import 'package:routemaster/routemaster.dart';
 import 'package:sign_in/sign_in.dart';
+import 'package:special/special.dart';
 import 'package:user_repository/user_repository.dart';
 
 Map<String, PageBuilder> buildRoutingTable({
@@ -16,15 +17,16 @@ Map<String, PageBuilder> buildRoutingTable({
           fullscreenDialog: true,
           child: Builder(
             builder: (context) {
-              return SignInScreen(
-                userRepository: userRepository,
-                onSignInSuccess: () {
-                   Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => InpatientListScreen()),
-            );
-                },
-              );
+            //   return SignInScreen(
+            //     userRepository: userRepository,
+            //     onSignInSuccess: () {
+            //        Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => InpatientListScreen()),
+            // );
+            //     },
+            //   );
+              return const SpecialScreen();
             },
           ),
         ),
