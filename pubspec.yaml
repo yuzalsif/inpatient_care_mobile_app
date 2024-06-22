@@ -21,6 +21,10 @@ dependencies:
     path: packages/features/sign_in
   investigation:
     path: packages/features/investigation
+  nurse_treatment_sheet:
+    path: packages/features/nurse_treatment_sheet
+  special:
+    path: packages/features/special
   patient_list:
     path: packages/features/patient_list  
   domain_models:

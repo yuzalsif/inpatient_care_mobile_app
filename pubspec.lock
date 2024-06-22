@@ -330,6 +330,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  nurse_treatment_sheet:
+    dependency: "direct main"
+    description:
+      path: "packages/features/nurse_treatment_sheet"
+      relative: true
+    source: path
+    version: "0.0.1"
   path:
     dependency: transitive
     description:
@@ -509,6 +516,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.0"
+  special:
+    dependency: "direct main"
+    description:
+      path: "packages/features/special"
+      relative: true
+    source: path
+    version: "0.0.1"
   stack_trace:
     dependency: transitive
     description:
