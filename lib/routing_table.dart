@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:inpatient_care_mobile_app/to_be_removed/nurse_treatment_sheet.dart';
 import 'package:patient_list/patient_list.dart';
 
 import 'package:routemaster/routemaster.dart';
