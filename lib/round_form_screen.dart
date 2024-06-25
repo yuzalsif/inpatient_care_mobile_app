@@ -17,35 +17,42 @@ class _RoundFormScreenState extends State<RoundFormScreen> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
-      child: Column(children: [
-        const Padding(
-          padding: EdgeInsets.all(Spacing.medium),
-          child: _PatientCard(
-            patientName: 'John Doe',
-            age: '25',
-            gender: "Male",
-          ),
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF5F5F5),
+        body: Padding(
+          padding: const EdgeInsets.all(Spacing.mediumLarge),
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            const _PatientCard(
+              patientName: 'John Doe',
+              age: '25',
+              gender: "Male",
+            ),
+            const SizedBox(height: Spacing.large),
+            TabBar(
+              tabs: const [
+                Text('Summary'),
+                Text('Diagnosis'),
+                Text('Management'),
+              ],
+              dividerColor: Colors.transparent,
+              indicatorColor: const Color(0xFF3579F8).withOpacity(0.9),
+              unselectedLabelStyle: TextStyle(
+                  color: const Color(0xFF1E1E1E).withOpacity(0.8),
+                  fontWeight: FontWeight.w500),
+              labelStyle: const TextStyle(
+                  color: Color(0xFF1E1E1E), fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(height: Spacing.mediumLarge),
+            const Expanded(
+              child: TabBarView(children: [
+                SummaryScreen(),
+                InvestigationScreen(),
+                ManagementScreen(),
+              ]),
+            )
+          ]),
         ),
-        TabBar(
-          tabs: const [
-            Text('Summary'),
-            Text('Diagnosis'),
-            Text('Management'),
-          ],
-          indicatorColor: const Color(0xFF3579F8).withOpacity(0.9),
-          unselectedLabelStyle: TextStyle(
-              color: const Color(0xFF1E1E1E).withOpacity(0.8),
-              fontWeight: FontWeight.w500),
-          labelStyle: const TextStyle(
-              color: Color(0xFF1E1E1E), fontWeight: FontWeight.w500),
-        ),
-        const SizedBox(height: Spacing.mediumLarge),
-        const TabBarView(children: [
-          SummaryScreen(),
-          InvestigationScreen(),
-          ManagementScreen(),
-        ])
-      ]),
+      ),
     );
   }
 }
@@ -70,18 +77,21 @@ class _PatientCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             constraints: const BoxConstraints(maxWidth: 107, maxHeight: 107),
             child: Image.asset('assets/images/patient.png'),
           ),
           const SizedBox(width: Spacing.mediumLarge),
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            _PatientCardInfoRow(label: 'Name:', value: patientName),
-            _PatientCardInfoRow(label: 'Age:', value: age),
-            _PatientCardInfoRow(label: 'Sex:', value: gender),
-          ])
+          Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _PatientCardInfoRow(label: 'Name:', value: patientName),
+                _PatientCardInfoRow(label: 'Age:', value: age),
+                _PatientCardInfoRow(label: 'Sex:', value: gender),
+              ])
         ],
       ),
     );

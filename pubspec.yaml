@@ -35,6 +35,7 @@ dependencies:
   component_library:
     path: packages/component_library
   google_fonts: ^6.2.1
+  flutter_svg: ^2.0.10+1
 
 
 dev_dependencies:
