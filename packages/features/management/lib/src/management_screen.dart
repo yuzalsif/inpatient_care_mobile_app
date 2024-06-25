@@ -2,29 +2,29 @@
 import 'package:flutter/material.dart';
 
 
-class SummaryWidget extends StatefulWidget {
-  const SummaryWidget({super.key});
+class ManagementScreen extends StatefulWidget {
+  const ManagementScreen({super.key});
 
   @override
-  State<SummaryWidget> createState() => _SummaryWidgetState();
+  State<ManagementScreen> createState() => _ManagementScreenState();
 }
 
-class _SummaryWidgetState extends State<SummaryWidget> {
-  final TextEditingController summaryController = TextEditingController();
+class _ManagementScreenState extends State<ManagementScreen> {
+  final TextEditingController managementController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 56),
       child: Column(children: [
-        ResizableTextField(hintText: 'Add a summary', controller: summaryController),
+        ResizableTextField(hintText: 'Add management', controller: managementController),
       const Spacer(),
-      _buildSummaryButton(text: 'Add', onPressed: () {}, icon:Icons.add )
+      _buildManagementButton(text: 'Add', onPressed: () {}, icon:Icons.add )
       ],),
     );
   }
 }
 
-Widget _buildSummaryButton({
+Widget _buildManagementButton({
   required String text,
   required VoidCallback onPressed,
   IconData? icon,

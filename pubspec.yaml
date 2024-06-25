@@ -25,7 +25,11 @@ dependencies:
   special:
     path: packages/features/special
   patient_list:
-    path: packages/features/patient_list  
+    path: packages/features/patient_list
+  summary:
+    path: packages/features/summary
+  management:
+    path: packages/features/management
   domain_models:
     path: packages/domain_models
   component_library:

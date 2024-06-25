@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inpatient_care_mobile_app/tablet_tab_container_screen.dart';
 import 'package:patient_list/patient_list.dart';
 
 import 'package:routemaster/routemaster.dart';
@@ -25,7 +26,7 @@ Map<String, PageBuilder> buildRoutingTable({
             // );
             //     },
             //   );
-              return const SpecialScreen();
+              return TabletTabContainerScreen();
             },
           ),
         ),

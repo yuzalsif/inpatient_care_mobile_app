@@ -1,1 +1,1 @@
-export 'src/management_widget.dart';
+export 'src/management_screen.dart';

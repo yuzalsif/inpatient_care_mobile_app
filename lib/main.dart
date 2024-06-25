@@ -24,11 +24,6 @@ class _InpatientCareMobileAppState extends State<InpatientCareMobileApp> {
   );
 
   late final RoutemasterDelegate _routerDelegate = RoutemasterDelegate(
-    // observers: [
-    //   ScreenViewObserver(
-    //     analyticsService: _analyticsService,
-    //   ),
-    // ],
     routesBuilder: (context) {
       return RouteMap(
         routes: buildRoutingTable(
