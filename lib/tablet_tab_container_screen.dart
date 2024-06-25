@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:routemaster/routemaster.dart';
 
 class TabletTabContainerScreen extends StatefulWidget {
@@ -35,18 +36,18 @@ class TabletRHSTabContainer extends StatelessWidget {
       controller: tabState.controller,
         tabBuilder: tabState.tabBuilder,
       tabBar: CupertinoTabBar(
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: SvgPicture.asset('assets/icons/pill.svg'),
+            label: 'Medical',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
+            icon: SvgPicture.asset('assets/icons/heartbeat.svg'),
+            label: 'Vitals',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
+            icon: SvgPicture.asset('assets/icons/bed.svg'),
+            label: 'Special',
           ),
         ],
       ),
