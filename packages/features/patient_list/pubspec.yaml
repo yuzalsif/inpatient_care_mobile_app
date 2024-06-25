@@ -18,7 +18,9 @@ dependencies:
   domain_models:
     path: ../../domain_models  
   inpatient_api:
-    path: ../../inpatient_api  
+    path: ../../inpatient_api
+  component_library:
+    path: ../../component_library
 
 dev_dependencies:
   flutter_test:

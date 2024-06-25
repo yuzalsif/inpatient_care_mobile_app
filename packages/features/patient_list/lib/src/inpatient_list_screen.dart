@@ -1,3 +1,4 @@
+import 'package:component_library/component_library.dart';
 import 'package:domain_models/domain_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,7 +30,7 @@ class InpatientList extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 48, left: 16, right: 16),
+            padding: const EdgeInsets.all(Spacing.mediumLarge),
             child: CustomSearchBar(
               onChanged: (searchTerm) {
                 context.read<InpatientCubit>().searchInpatients(searchTerm);

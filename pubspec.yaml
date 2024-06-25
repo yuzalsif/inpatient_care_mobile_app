@@ -30,6 +30,8 @@ dependencies:
     path: packages/features/summary
   management:
     path: packages/features/management
+  observation_chart:
+    path: packages/features/observation_chart
   domain_models:
     path: packages/domain_models
   component_library:

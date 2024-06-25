@@ -13,51 +13,60 @@ class ObservationChartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF5F5F5),
         appBar: AppBar(
-          title: const Text('Observation chart'),
+          title: const Text(
+            'Observation chart',
+            style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: Color(0xff1E1E1E)),
+          ),
         ),
-        body: Column(
-          children: [
-            _buildObservationChartTextField(
-              labelText: 'Weight in kg',
-              controller: weightController,
-            ),
-            const SizedBox(
-              height: 24,
-            ),
-            _buildObservationChartTextField(
-              labelText: 'Temperature',
-              controller: temperatureController,
-            ),
-            const SizedBox(
-              height: 24,
-            ),
-            _buildObservationChartTextField(
-              labelText: 'Pulse',
-              controller: pulseController,
-              helperText: '(36 - 37) Celsius',
-            ),
-            const SizedBox(
-              height: 24,
-            ),
-            _buildObservationChartTextField(
-              labelText: 'Respiratory rate',
-              controller: respiratoryRateController,
-              helperText: '(60-100) beats/min',
-            ),
-            const SizedBox(
-              height: 24,
-            ),
-            _buildObservationChartTextField(
-              labelText: 'Systolic',
-              controller: systolicController,
-              helperText: '(12 - 16) breaths/min',
-            ),
-            const SizedBox(
-              height: 152,
-            ),
-            _buildObservationChartButton(text: 'Save', onPressed: () {})
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              _buildObservationChartTextField(
+                labelText: 'Weight in kg',
+                controller: weightController,
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              _buildObservationChartTextField(
+                labelText: 'Temperature',
+                controller: temperatureController,
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              _buildObservationChartTextField(
+                labelText: 'Pulse',
+                controller: pulseController,
+                helperText: '(36 - 37) Celsius',
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              _buildObservationChartTextField(
+                labelText: 'Respiratory rate',
+                controller: respiratoryRateController,
+                helperText: '(60-100) beats/min',
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              _buildObservationChartTextField(
+                labelText: 'Systolic',
+                controller: systolicController,
+                helperText: '(12 - 16) breaths/min',
+              ),
+              const SizedBox(
+                height: 100,
+              ),
+              _buildObservationChartButton(text: 'Save', onPressed: () {})
+            ],
+          ),
         ));
   }
 }

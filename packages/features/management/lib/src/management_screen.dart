@@ -1,6 +1,5 @@
-
+import 'package:component_library/component_library.dart';
 import 'package:flutter/material.dart';
-
 
 class ManagementScreen extends StatefulWidget {
   const ManagementScreen({super.key});
@@ -11,15 +10,20 @@ class ManagementScreen extends StatefulWidget {
 
 class _ManagementScreenState extends State<ManagementScreen> {
   final TextEditingController managementController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 56),
-      child: Column(children: [
-        ResizableTextField(hintText: 'Add management', controller: managementController),
-      const Spacer(),
-      _buildManagementButton(text: 'Add', onPressed: () {}, icon:Icons.add )
-      ],),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ResizableTextField(
+              hintText: 'Add management', controller: managementController),
+          const SizedBox(height: Spacing.xxLarge),
+          _buildManagementButton(text: 'Add', onPressed: () {}, icon: Icons.add)
+        ],
+      ),
     );
   }
 }
@@ -110,9 +114,11 @@ class _ResizableTextFieldState extends State<ResizableTextField> {
           TextField(
             controller: widget.controller,
             minLines: 1,
-            maxLines: null, // Allow the TextField to grow vertically
-            textAlignVertical: TextAlignVertical.center, // Center the text vertically
-            decoration:  InputDecoration(
+            maxLines: null,
+            // Allow the TextField to grow vertically
+            textAlignVertical: TextAlignVertical.center,
+            // Center the text vertically
+            decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(8.0),
               border: InputBorder.none,
               hintText: widget.hintText,

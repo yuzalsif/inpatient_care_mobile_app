@@ -5,7 +5,8 @@ class NurseTreatmentSheetScreen extends StatefulWidget {
   const NurseTreatmentSheetScreen({super.key});
 
   @override
-  State<NurseTreatmentSheetScreen> createState() => _NurseTreatmentSheetScreenState();
+  State<NurseTreatmentSheetScreen> createState() =>
+      _NurseTreatmentSheetScreenState();
 }
 
 class _NurseTreatmentSheetScreenState extends State<NurseTreatmentSheetScreen> {
@@ -15,31 +16,36 @@ class _NurseTreatmentSheetScreenState extends State<NurseTreatmentSheetScreen> {
         backgroundColor: const Color(0xFFF5F5F5),
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16, bottom: 32),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Nurse Treatment Sheet',
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xff1E1E1E))),
-                    SizedBox(
-                      height: Spacing.xLarge,
-                    ),
-                    _InputField(label: 'Oral Medication'),
-                    SizedBox(
-                      height: Spacing.xxxLarge,
-                    ),
-                    _InputField(label: 'Oral Infusion / Treatment'),
-                  ],
-                ),
-                Center(child: RoundFormButton(label: 'Save', onPressed: () {} )),
-              ],
+            padding: const EdgeInsets.only(
+                left: 16.0, right: 16, top: 16, bottom: 32),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Nurse Treatment Sheet',
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xff1E1E1E))),
+                      SizedBox(
+                        height: Spacing.xLarge,
+                      ),
+                      _InputField(label: 'Oral Medication'),
+                      SizedBox(
+                        height: Spacing.xxxLarge,
+                      ),
+                      _InputField(label: 'Oral Infusion / Treatment'),
+                    ],
+                  ),
+                  const SizedBox(height: Spacing.xxxLarge),
+                  Center(
+                      child: RoundFormButton(label: 'Save', onPressed: () {})),
+                ],
+              ),
             ),
           ),
         ));
@@ -56,7 +62,6 @@ class _InputField extends StatefulWidget {
 }
 
 class _InputFieldState extends State<_InputField> {
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -78,9 +83,9 @@ class _InputFieldState extends State<_InputField> {
             SizedBox(
               height: 20,
               child: TextField(
-                autofocus: true,
+                autofocus: false,
                 decoration: InputDecoration(
-                  label:  Text(
+                  label: Text(
                     widget.label,
                     style: const TextStyle(
                       fontSize: 14,

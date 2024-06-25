@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 
+import 'package:component_library/component_library.dart';
 
 class SummaryScreen extends StatefulWidget {
   const SummaryScreen({super.key});
@@ -11,15 +11,20 @@ class SummaryScreen extends StatefulWidget {
 
 class _SummaryScreenState extends State<SummaryScreen> {
   final TextEditingController summaryController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 56),
-      child: Column(children: [
-        ResizableTextField(hintText: 'Add a summary', controller: summaryController),
-      const Spacer(),
-      _buildSummaryButton(text: 'Add', onPressed: () {}, icon:Icons.add )
-      ],),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ResizableTextField(
+              hintText: 'Add a summary', controller: summaryController),
+          const SizedBox(height: Spacing.xxLarge),
+          _buildSummaryButton(text: 'Add', onPressed: () {}, icon: Icons.add)
+        ],
+      ),
     );
   }
 }
@@ -110,9 +115,11 @@ class _ResizableTextFieldState extends State<ResizableTextField> {
           TextField(
             controller: widget.controller,
             minLines: 1,
-            maxLines: null, // Allow the TextField to grow vertically
-            textAlignVertical: TextAlignVertical.center, // Center the text vertically
-            decoration:  InputDecoration(
+            maxLines: null,
+            // Allow the TextField to grow vertically
+            textAlignVertical: TextAlignVertical.center,
+            // Center the text vertically
+            decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(8.0),
               border: InputBorder.none,
               hintText: widget.hintText,

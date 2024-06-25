@@ -23,7 +23,7 @@ class _RoundFormScreenState extends State<RoundFormScreen> {
           padding: const EdgeInsets.all(Spacing.mediumLarge),
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             const _PatientCard(
-              patientName: 'John Doe',
+              patientName: 'YUSUF ABDILLAH',
               age: '25',
               gender: "Male",
             ),
@@ -44,11 +44,14 @@ class _RoundFormScreenState extends State<RoundFormScreen> {
             ),
             const SizedBox(height: Spacing.mediumLarge),
             const Expanded(
-              child: TabBarView(children: [
-                SummaryScreen(),
-                InvestigationScreen(),
-                ManagementScreen(),
-              ]),
+              child: Padding(
+                padding: EdgeInsets.only(left: Spacing.xLarge, right: Spacing.xLarge),
+                child: TabBarView(children: [
+                  SummaryScreen(),
+                  InvestigationScreen(),
+                  ManagementScreen(),
+                ]),
+              ),
             )
           ]),
         ),
@@ -79,16 +82,24 @@ class _PatientCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            constraints: const BoxConstraints(maxWidth: 107, maxHeight: 107),
-            child: Image.asset('assets/images/patient.png'),
+          CircleAvatar(
+            radius: 42,
+            backgroundColor: Colors.grey[100],
+            child: Icon(Icons.person, size: 70, color: Colors.grey[350]),
           ),
           const SizedBox(width: Spacing.mediumLarge),
           Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _PatientCardInfoRow(label: 'Name:', value: patientName),
+                Text(
+                  patientName,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF1E1E1E).withOpacity(0.8),
+                  ),
+                ),
                 _PatientCardInfoRow(label: 'Age:', value: age),
                 _PatientCardInfoRow(label: 'Sex:', value: gender),
               ])

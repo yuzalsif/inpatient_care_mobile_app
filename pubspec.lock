@@ -360,6 +360,13 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  observation_chart:
+    dependency: "direct main"
+    description:
+      path: "packages/features/observation_chart"
+      relative: true
+    source: path
+    version: "0.0.1"
   path:
     dependency: transitive
     description:
