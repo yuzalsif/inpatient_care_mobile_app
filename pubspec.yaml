@@ -1,5 +1,4 @@
 name: inpatient_care_mobile_app
-description:
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -41,5 +40,8 @@ dev_dependencies:
 
 
 flutter:
+
+  assets:
+    - assets/images/
 
   uses-material-design: true
