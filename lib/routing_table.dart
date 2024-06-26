@@ -15,7 +15,8 @@ Map<String, PageBuilder> buildRoutingTable({
   required UserRepository userRepository,
 }) {
   return {
-    _PathConstants.tabletTabContainerPath: (_) => MaterialPage(
+    _PathConstants.tabletTabContainerPath: (_) =>
+        MaterialPage(
           name: 'tablet_tab_container',
           child: Builder(
             builder: (context) {
@@ -23,15 +24,17 @@ Map<String, PageBuilder> buildRoutingTable({
             },
           ),
         ),
-    _PathConstants.mobileTabContainerPath: (_) => CupertinoTabPage(
-      child: Container(), //TODO: Replace this with an actual widget
-          paths: [
-            _PathConstants.mobileTabContainerMedicalPath,
-            _PathConstants.mobileTabContainerVitalsPath,
-            _PathConstants.mobileTabContainerSpecialPath,
-          ]
+    _PathConstants.mobileTabContainerPath: (_) =>
+        CupertinoTabPage(
+            child: Container(), //TODO: Replace this with an actual widget
+            paths: [
+              _PathConstants.mobileTabContainerMedicalPath,
+              _PathConstants.mobileTabContainerVitalsPath,
+              _PathConstants.mobileTabContainerSpecialPath,
+            ]
         ),
-    _PathConstants.mobileTabContainerMedicalPath: (_) => MaterialPage(
+    _PathConstants.mobileTabContainerMedicalPath: (_) =>
+        MaterialPage(
           name: 'medical',
           child: Builder(
             builder: (context) {
@@ -39,7 +42,8 @@ Map<String, PageBuilder> buildRoutingTable({
             },
           ),
         ),
-    _PathConstants.mobileTabContainerVitalsPath: (_) => MaterialPage(
+    _PathConstants.mobileTabContainerVitalsPath: (_) =>
+        MaterialPage(
           name: 'vitals',
           child: Builder(
             builder: (context) {
@@ -47,7 +51,8 @@ Map<String, PageBuilder> buildRoutingTable({
             },
           ),
         ),
-    _PathConstants.mobileTabContainerSpecialPath: (_) => MaterialPage(
+    _PathConstants.mobileTabContainerSpecialPath: (_) =>
+        MaterialPage(
           name: 'special',
           child: Builder(
             builder: (context) {
@@ -55,25 +60,25 @@ Map<String, PageBuilder> buildRoutingTable({
             },
           ),
         ),
-    _PathConstants.signInPath: (_) => MaterialPage(
+    _PathConstants.signInPath: (_) =>
+        MaterialPage(
           name: 'sign-in',
           fullscreenDialog: true,
           child: Builder(
             builder: (context) {
-              //   return SignInScreen(
-              //     userRepository: userRepository,
-              //     onSignInSuccess: () {
-              //        Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => InpatientListScreen()),
-              // );
-              //     },
-              //   );
-              return RoundFormScreen();
+              return SignInScreen(
+                userRepository: userRepository,
+                onSignInSuccess: () {
+                  routerDelegate.push(
+                    _PathConstants.tabletTabContainerPath,
+                  );
+                },
+              );
             },
           ),
         ),
-    _PathConstants.inpatientListPath: (_) => MaterialPage(
+    _PathConstants.inpatientListPath: (_) =>
+        MaterialPage(
           name: 'inpatient-list',
           child: Builder(
             builder: (context) {
@@ -87,15 +92,20 @@ Map<String, PageBuilder> buildRoutingTable({
 class _PathConstants {
   const _PathConstants._();
 
-  static String get signInPath => '/sign_in';
+  static String get signInPath => '/';
 
   static String get inpatientListPath => '/patient_list';
 
-  // static String get tabletTabContainerPath => '/tablet_tab_container';
-  static String get tabletTabContainerPath => '/';
+  static String get tabletTabContainerPath => '/tablet_tab_container';
 
   static String get mobileTabContainerPath => '/tablet_rhs_tab_container';
-  static String get mobileTabContainerMedicalPath => '$mobileTabContainerPath/medical';
-  static String get mobileTabContainerVitalsPath => '$mobileTabContainerPath/vitals';
-  static String get mobileTabContainerSpecialPath => '$mobileTabContainerPath/special';
+
+  static String get mobileTabContainerMedicalPath =>
+      '$mobileTabContainerPath/medical';
+
+  static String get mobileTabContainerVitalsPath =>
+      '$mobileTabContainerPath/vitals';
+
+  static String get mobileTabContainerSpecialPath =>
+      '$mobileTabContainerPath/special';
 }
