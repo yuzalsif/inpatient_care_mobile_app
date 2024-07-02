@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ipd_repository/ipd_repository.dart';
 import 'package:routemaster/routemaster.dart';
 
 import 'package:inpatient_care_mobile_app/round_form_screen.dart';
@@ -15,6 +16,7 @@ Map<String, PageBuilder> buildRoutingTable({
   required RoutemasterDelegate routerDelegate,
   required UserRepository userRepository,
   required InpatientRepository inpatientRepository,
+  required IpdRepository ipdRepository,
 }) {
   return {
     _PathConstants.tabletTabContainerPath: (_) => MaterialPage(
@@ -24,6 +26,7 @@ Map<String, PageBuilder> buildRoutingTable({
               return TabletTabContainerScreen(
                 inpatientRepository: inpatientRepository,
                 userRepository: userRepository,
+                ipdRepository: ipdRepository,
               );
             },
           ),

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:component_library/component_library.dart';
 import 'package:flutter/material.dart';
 import 'package:inpatient_care_mobile_app/round_form_screen.dart';
+import 'package:ipd_repository/ipd_repository.dart';
 
 import 'package:nurse_treatment_sheet/nurse_treatment_sheet.dart';
 import 'package:observation_chart/observation_chart.dart';
@@ -14,11 +15,14 @@ import 'package:inpatient_repository/inpatient_repository.dart';
 class TabletTabContainerScreen extends StatefulWidget {
   final UserRepository userRepository;
   final InpatientRepository inpatientRepository;
+  final IpdRepository ipdRepository;
 
-  const TabletTabContainerScreen(
-      {super.key,
-      required this.userRepository,
-      required this.inpatientRepository});
+  const TabletTabContainerScreen({
+    super.key,
+    required this.userRepository,
+    required this.inpatientRepository,
+    required this.ipdRepository,
+  });
 
   @override
   State<TabletTabContainerScreen> createState() =>
@@ -135,7 +139,11 @@ class _TabletTabContainerScreenState extends State<TabletTabContainerScreen> {
                       width:
                           size.width * ContainerSize.smallContainerWidthFactor,
                       height: size.height,
-                      child: const TabletRHSTabContainer(),
+                      child: TabletRHSTabContainer(
+                        ipdRepository: widget.ipdRepository,
+                        userRepository: widget.userRepository,
+                        selectedInpatient: inpatient,
+                      ),
                     )
                   ]);
             }
@@ -180,7 +188,16 @@ class _TabletTabContainerScreenState extends State<TabletTabContainerScreen> {
 }
 
 class TabletRHSTabContainer extends StatefulWidget {
-  const TabletRHSTabContainer({super.key});
+  final IpdRepository ipdRepository;
+  final Inpatient selectedInpatient;
+  final UserRepository userRepository;
+
+  const TabletRHSTabContainer({
+    super.key,
+    required this.ipdRepository,
+    required this.selectedInpatient,
+    required this.userRepository,
+  });
 
   @override
   State<TabletRHSTabContainer> createState() => _TabletRHSTabContainerState();

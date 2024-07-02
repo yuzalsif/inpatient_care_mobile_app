@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:routemaster/routemaster.dart';
+
+
 import 'package:inpatient_api/inpatient_api.dart';
 import 'package:inpatient_care_mobile_app/routing_table.dart';
 import 'package:inpatient_repository/inpatient_repository.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:user_repository/user_repository.dart';
+import 'package:ipd_repository/ipd_repository.dart';
+
 
 void main() {
   runApp(const InpatientCareMobileApp());
@@ -31,6 +35,10 @@ class _InpatientCareMobileAppState extends State<InpatientCareMobileApp> {
     remoteApi: _inpatientApiTemp,
   );
 
+  late final _ipdRepository = IpdRepository(
+    remoteApi: _inpatientApi,
+  );
+
   late final RoutemasterDelegate _routerDelegate = RoutemasterDelegate(
     routesBuilder: (context) {
       return RouteMap(
@@ -38,6 +46,7 @@ class _InpatientCareMobileAppState extends State<InpatientCareMobileApp> {
           routerDelegate: _routerDelegate,
           userRepository: _userRepository,
           inpatientRepository: _inpatientRepository,
+          ipdRepository: _ipdRepository,
         ),
       );
     },
