@@ -1,8 +1,21 @@
-import 'package:component_library/component_library.dart';
 import 'package:flutter/material.dart';
 
+import 'package:component_library/component_library.dart';
+import 'package:ipd_repository/ipd_repository.dart';
+import 'package:user_repository/user_repository.dart';
+import 'package:domain_models/domain_models.dart';
+
+
 class NurseTreatmentSheetScreen extends StatefulWidget {
-  const NurseTreatmentSheetScreen({super.key});
+  final IpdRepository ipdRepository;
+  final UserRepository userRepository;
+  final Inpatient selectedInpatient;
+
+  const NurseTreatmentSheetScreen({super.key,
+    required this.ipdRepository,
+    required this.userRepository,
+    required this.selectedInpatient,
+  });
 
   @override
   State<NurseTreatmentSheetScreen> createState() =>

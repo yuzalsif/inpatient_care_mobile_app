@@ -65,6 +65,7 @@ class _TabletTabContainerScreenState extends State<TabletTabContainerScreen> {
         ],
       ),
       body: SafeArea(
+        //TODO: USE BLOC HERE
         child: StreamBuilder(
           stream: widget.inpatientRepository.getSelectedInpatient(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {

@@ -97,6 +97,30 @@ class InpatientApi {
     await request.send();
   }
 
+  Future<String> getInpatientVisitId(
+      String sessionId, String inpatientUuid) async {
+    final url = _urlBuilder.buildGetInpatientVisitIdUrl(inpatientUuid);
+    var headersList = {
+      'Accept': 'application/json, text/plain, */*',
+      'JSESSIONID': sessionId,
+      'Content-Type': 'application/json'
+    };
+    var visitIdUrl = Uri.parse(url);
+
+    var request = http.Request('GET', visitIdUrl);
+    request.headers.addAll(headersList);
+
+    var response = await request.send();
+    final resBody = await response.stream.bytesToString();
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      final Map<String, dynamic> responseData = jsonDecode(resBody);
+      return responseData['results'][0]['uuid'] as String;
+    } else {
+      throw Exception('Failed to retrieve data: ${response.statusCode}');
+    }
+  }
+
   Future<InpatientPageListRM> getInpatientListPage(
       int startIndex, String searchTerm) async {
     final url = Uri.parse(
@@ -111,5 +135,4 @@ class InpatientApi {
       throw Exception('Failed to retrieve data: ${response.statusCode}');
     }
   }
-  
 }

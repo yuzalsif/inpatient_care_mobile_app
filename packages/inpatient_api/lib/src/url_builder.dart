@@ -28,13 +28,18 @@ class UrlBuilder {
   }
 
   String buildSignOutUrl() {
-    _checkForBaseUrlBeforeBuildAnyUrl();
-    return '$baseUrl/openmrs/ws/rest/v1/session';
+    // _checkForBaseUrlBeforeBuildAnyUrl();
+    return 'https://icare-student.dhis2.udsm.ac.tz/openmrs/ws/rest/v1/session';
   }
 
   String buildEncounterUrl() {
-    _checkForBaseUrlBeforeBuildAnyUrl();
-    return '$baseUrl/openmrs/ws/rest/v1/encounter';
+    // _checkForBaseUrlBeforeBuildAnyUrl();
+    return 'https://icare-student.dhis2.udsm.ac.tz/openmrs/ws/rest/v1/encounter';
+  }
+
+  String buildGetInpatientVisitIdUrl(String inpatientUuid) {
+    // _checkForBaseUrlBeforeBuildAnyUrl();
+    return 'https://icare-student.dhis2.udsm.ac.tz/openmrs/ws/rest/v1/icare/visit?includeInactive=fals&patient=$inpatientUuid';
   }
 
 String buildGetInpatientListPageUrl(
