@@ -10,7 +10,7 @@ class ObservationRM {
   final String value;
   final String location;
   final String status;
-  final String encounter;
+  final String? encounter;
   final bool voided;
 
   ObservationRM({
@@ -20,7 +20,7 @@ class ObservationRM {
     required this.value,
     required this.location,
     required this.status,
-    required this.encounter,
+    this.encounter,
     required this.voided,
   });
 

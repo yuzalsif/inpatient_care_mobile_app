@@ -16,4 +16,5 @@ Map<String, dynamic> _$EncounterRMToJson(EncounterRM instance) =>
       'visit': instance.visit,
       'obs': EncounterRM._observationsToJson(instance.observations),
       'form': EncounterRM._ipdFormToJson(instance.ipdForm),
+      'order': EncounterRM._ordersToJson(instance.order),
     };

@@ -7,3 +7,4 @@ export 'request/encounter_provider_rm.dart';
 export 'request/observation_rm.dart';
 export 'request/inpatient_list_page_rm.dart';
 export  'request/inpatient_rm.dart';
+export 'request/order_rm.dart';
