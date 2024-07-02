@@ -1,23 +1,23 @@
-import 'encounter_provider.dart';
-import 'ipd_form.dart';
-import 'observation.dart';
+import '../domain_models.dart';
 
 class Encounter {
   final String patient;
   final String encounterType;
-  final String location;
+  final String? location;
   final List<EncounterProvider> encounterProviders;
   final String visit;
-  final List<Observation> observations;
-  final IpdForm ipdForm;
+  final List<Observation>? observations;
+  final IpdForm? ipdForm;
+  final List<Order>? order;
 
   Encounter({
     required this.patient,
     required this.encounterType,
-    required this.location,
+    this.location,
     required this.encounterProviders,
     required this.visit,
-    required this.observations,
-    required this.ipdForm,
+    this.observations,
+    this.order,
+    this.ipdForm,
   });
 }

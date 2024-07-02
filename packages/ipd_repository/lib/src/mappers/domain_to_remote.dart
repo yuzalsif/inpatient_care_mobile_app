@@ -33,16 +33,33 @@ extension EncounterProviderToRemote on EncounterProvider {
   }
 }
 
+extension OrderToRemote on Order {
+  OrderRM toRemote() {
+    return OrderRM(
+      orderType: orderType,
+      concept: concept,
+      orderer: orderer,
+      urgency: urgency,
+      type: type,
+      instructions: instructions,
+      careSetting: careSetting,
+      action: action,
+      patient: patient,
+    );
+  }
+}
+
 extension EncounterToRemote on Encounter {
   EncounterRM toRemote() {
     return EncounterRM(
       encounterType: encounterType,
       patient: patient,
       visit: visit,
-      observations: observations.map((e) => e.toRemote()).toList(),
+      observations: observations?.map((e) => e.toRemote()).toList(),
       encounterProviders: encounterProviders.map((e) => e.toRemote()).toList(),
       location: location,
-      ipdForm: ipdForm.toRemote(),
+      order: order?.map((e) => e.toRemote()).toList(),
+      ipdForm: ipdForm?.toRemote(),
     );
   }
 }
