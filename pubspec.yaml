@@ -18,6 +18,8 @@ dependencies:
     path: packages/user_repository
   inpatient_repository:
     path: packages/inpatient_repository
+  ipd_repository:
+    path: packages/ipd_repository
   sign_in:
     path: packages/features/sign_in
   investigation:

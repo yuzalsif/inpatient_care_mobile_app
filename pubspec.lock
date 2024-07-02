@@ -266,6 +266,13 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  ipd_repository:
+    dependency: "direct main"
+    description:
+      path: "packages/ipd_repository"
+      relative: true
+    source: path
+    version: "0.0.1"
   js:
     dependency: transitive
     description:
