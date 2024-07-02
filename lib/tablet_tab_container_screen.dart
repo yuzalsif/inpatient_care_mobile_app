@@ -226,13 +226,21 @@ class _TabletRHSTabContainerState extends State<TabletRHSTabContainer> {
       tabBuilder: (context, index) {
         switch (index) {
           case 0:
-            return const NurseTreatmentSheetScreen();
+            return NurseTreatmentSheetScreen(
+              ipdRepository: widget.ipdRepository,
+              userRepository: widget.userRepository,
+              selectedInpatient: widget.selectedInpatient,
+            );
           case 1:
             return ObservationChartScreen();
           case 2:
             return const SpecialScreen();
           default:
-            return const NurseTreatmentSheetScreen();
+            return NurseTreatmentSheetScreen(
+              ipdRepository: widget.ipdRepository,
+              userRepository: widget.userRepository,
+              selectedInpatient: widget.selectedInpatient,
+            );
         }
       },
       tabBar: CupertinoTabBar(

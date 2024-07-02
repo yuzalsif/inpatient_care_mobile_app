@@ -5,7 +5,7 @@ class Observation {
   final String value;
   final String location;
   final String status;
-  final String encounter;
+  String? encounter;
   final bool voided;
 
   Observation({
@@ -15,7 +15,7 @@ class Observation {
     required this.value,
     required this.location,
     required this.status,
-    required this.encounter,
+    this.encounter,
     required this.voided,
   });
 }

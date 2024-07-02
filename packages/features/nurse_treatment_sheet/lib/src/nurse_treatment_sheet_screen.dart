@@ -5,13 +5,13 @@ import 'package:ipd_repository/ipd_repository.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:domain_models/domain_models.dart';
 
-
 class NurseTreatmentSheetScreen extends StatefulWidget {
   final IpdRepository ipdRepository;
   final UserRepository userRepository;
   final Inpatient selectedInpatient;
 
-  const NurseTreatmentSheetScreen({super.key,
+  const NurseTreatmentSheetScreen({
+    super.key,
     required this.ipdRepository,
     required this.userRepository,
     required this.selectedInpatient,
@@ -23,6 +23,17 @@ class NurseTreatmentSheetScreen extends StatefulWidget {
 }
 
 class _NurseTreatmentSheetScreenState extends State<NurseTreatmentSheetScreen> {
+  final TextEditingController _oralMedicationController =
+      TextEditingController();
+  final TextEditingController _oralInfusionController = TextEditingController();
+
+  @override
+  void dispose() {
+    _oralMedicationController.dispose();
+    _oralInfusionController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,27 +47,91 @@ class _NurseTreatmentSheetScreenState extends State<NurseTreatmentSheetScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Column(
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Nurse Treatment Sheet',
+                      const Text('Nurse Treatment Sheet',
                           style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w500,
                               color: Color(0xff1E1E1E))),
-                      SizedBox(
+                      const SizedBox(
                         height: Spacing.xLarge,
                       ),
-                      _InputField(label: 'Oral Medication'),
-                      SizedBox(
+                      _InputField(
+                        label: 'Oral Medication',
+                        controller: _oralMedicationController,
+                      ),
+                      const SizedBox(
                         height: Spacing.xxxLarge,
                       ),
-                      _InputField(label: 'Oral Infusion / Treatment'),
+                      _InputField(
+                        label: 'Oral Infusion / Treatment',
+                        controller: _oralInfusionController,
+                      ),
                     ],
                   ),
                   const SizedBox(height: Spacing.xxxLarge),
                   Center(
-                      child: RoundFormButton(label: 'Save', onPressed: () {})),
+                      child: RoundFormButton(
+                          label: 'Save',
+                          onPressed: () async {
+                            final submissionTime =
+                                DateTime.now().toIso8601String();
+                            List<Observation> observations = [];
+                            _oralMedicationController.text != ''
+                                ? observations.add(Observation(
+                                    person: widget.selectedInpatient.id,
+                                    obsDateTime: submissionTime,
+                                    concept: IpdRepository
+                                        .conceptField1NurseTreatmentSheet,
+                                    value: _oralMedicationController.text,
+                                    location: IpdRepository.locationIpd,
+                                    status: "PRELIMINARY",
+                                    voided: false))
+                                : null;
+
+                            _oralInfusionController.text != ''
+                                ? observations.add(Observation(
+                                    person: widget.selectedInpatient.id,
+                                    obsDateTime: submissionTime,
+                                    concept: IpdRepository
+                                        .conceptField2NurseTreatmentSheet,
+                                    value: _oralInfusionController.text,
+                                    location: IpdRepository.locationIpd,
+                                    status: "PRELIMINARY",
+                                    voided: false))
+                                : null;
+
+                            final encounterProviders = [
+                              EncounterProvider(
+                                  provider: IpdRepository.provider,
+                                  encounterRole: IpdRepository.encounterRole)
+                            ];
+
+                            final ipdForm = IpdForm(
+                                uuid: IpdRepository.formIDNurseTreatmentSheet);
+
+                            final currentUserSessionId =
+                                await widget.userRepository.getUserSessionId();
+                            final selectedInpatientVisitId =
+                                await widget.ipdRepository.getInpatientVisitId(
+                                    currentUserSessionId ?? '',
+                                    widget.selectedInpatient.id);
+
+                            final encounter = Encounter(
+                              patient: widget.selectedInpatient.id,
+                              encounterType: IpdRepository.encounterTypeIpd,
+                              encounterProviders: encounterProviders,
+                              visit: selectedInpatientVisitId,
+                              observations: observations,
+                              ipdForm: ipdForm,
+                              location: IpdRepository.locationIpd,
+                            );
+
+                            await widget.ipdRepository.createEncounter(
+                                encounter, currentUserSessionId ?? '');
+                          })),
                 ],
               ),
             ),
@@ -66,9 +141,14 @@ class _NurseTreatmentSheetScreenState extends State<NurseTreatmentSheetScreen> {
 }
 
 class _InputField extends StatefulWidget {
+  final TextEditingController controller;
   final String label;
 
-  const _InputField({super.key, required this.label});
+  const _InputField({
+    super.key,
+    required this.label,
+    required this.controller,
+  });
 
   @override
   State<_InputField> createState() => _InputFieldState();
@@ -97,6 +177,7 @@ class _InputFieldState extends State<_InputField> {
               height: 20,
               child: TextField(
                 autofocus: false,
+                controller: widget.controller,
                 decoration: InputDecoration(
                   label: Text(
                     widget.label,
