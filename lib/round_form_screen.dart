@@ -112,7 +112,7 @@ class _PatientCard extends StatelessWidget {
                 ),
                 _PatientCardInfoRow(label: 'Age:', value: age),
                 _PatientCardInfoRow(label: 'Sex:', value: gender),
-                _PatientCardInfoRow(label: 'Contacts:', value: mobileNumber),
+                _PatientCardPhoneNumberRow(phoneNumber: mobileNumber),
               ])
         ],
       ),
