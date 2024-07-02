@@ -1,16 +1,24 @@
+import 'package:domain_models/domain_models.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:component_library/component_library.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:inpatient_care_mobile_app/round_form_screen.dart';
 
 import 'package:nurse_treatment_sheet/nurse_treatment_sheet.dart';
 import 'package:observation_chart/observation_chart.dart';
 import 'package:patient_list/patient_list.dart';
 import 'package:special/special.dart';
+import 'package:user_repository/user_repository.dart';
+import 'package:inpatient_repository/inpatient_repository.dart';
 
 class TabletTabContainerScreen extends StatefulWidget {
-  const TabletTabContainerScreen({super.key});
+  final UserRepository userRepository;
+  final InpatientRepository inpatientRepository;
+
+  const TabletTabContainerScreen(
+      {super.key,
+      required this.userRepository,
+      required this.inpatientRepository});
 
   @override
   State<TabletTabContainerScreen> createState() =>
@@ -53,39 +61,119 @@ class _TabletTabContainerScreenState extends State<TabletTabContainerScreen> {
         ],
       ),
       body: SafeArea(
-        child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Container(
-            width: size.width * ContainerSize.smallContainerWidthFactor,
-            height: size.height,
-            decoration: BoxDecoration(
-              border: Border(
-                right: BorderSide(
-                  color: const Color(0xFF000000).withOpacity(0.1),
-                  width: 1,
+        child: StreamBuilder(
+          stream: widget.inpatientRepository.getSelectedInpatient(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width:
+                          size.width * ContainerSize.smallContainerWidthFactor,
+                      height: size.height,
+                      decoration: BoxDecoration(
+                        border: Border(
+                          right: BorderSide(
+                            color: const Color(0xFF000000).withOpacity(0.1),
+                            width: 1,
+                          ),
+                        ),
+                      ),
+                      child: InpatientListScreen(
+                        inpatientRepository: widget.inpatientRepository,
+                      ),
+                    ),
+                    SizedBox(
+                      width:
+                          size.width * ContainerSize.largeContainerWidthFactor,
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [CircularProgressIndicator()],
+                      ),
+                    )
+                  ]);
+            } else if (snapshot.hasData) {
+              final inpatient = snapshot.data as Inpatient;
+              return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width:
+                          size.width * ContainerSize.smallContainerWidthFactor,
+                      height: size.height,
+                      decoration: BoxDecoration(
+                        border: Border(
+                          right: BorderSide(
+                            color: const Color(0xFF000000).withOpacity(0.1),
+                            width: 1,
+                          ),
+                        ),
+                      ),
+                      child: InpatientListScreen(
+                        inpatientRepository: widget.inpatientRepository,
+                      ),
+                    ),
+                    Container(
+                      width:
+                          size.width * ContainerSize.mediumContainerWidthFactor,
+                      height: size.height,
+                      decoration: BoxDecoration(
+                        border: Border(
+                          right: BorderSide(
+                            color: const Color(0xFF000000).withOpacity(0.1),
+                            width: 1,
+                          ),
+                        ),
+                      ),
+                      child: RoundFormScreen(
+                        inpatient: inpatient,
+                      ),
+                    ),
+                    SizedBox(
+                      width:
+                          size.width * ContainerSize.smallContainerWidthFactor,
+                      height: size.height,
+                      child: const TabletRHSTabContainer(),
+                    )
+                  ]);
+            }
+            return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Container(
+                width: size.width * ContainerSize.smallContainerWidthFactor,
+                height: size.height,
+                decoration: BoxDecoration(
+                  border: Border(
+                    right: BorderSide(
+                      color: const Color(0xFF000000).withOpacity(0.1),
+                      width: 1,
+                    ),
+                  ),
+                ),
+                child: InpatientListScreen(
+                  inpatientRepository: widget.inpatientRepository,
                 ),
               ),
-            ),
-            child: InpatientListScreen(),
-          ),
-          Container(
-            width: size.width * ContainerSize.mediumContainerWidthFactor,
-            height: size.height,
-            decoration: BoxDecoration(
-              border: Border(
-                right: BorderSide(
-                  color: const Color(0xFF000000).withOpacity(0.1),
-                  width: 1,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.network(
+                      'https://drive.google.com/uc?export=download&id=1kjZxZkd4TXjC-95KUNItuG_cSe5Vpnkb',
+                      width: 140,
+                      height: 200,
+                    ),
+                    const Text(
+                        textAlign: TextAlign.center,
+                        'Select an inpatient to get started'),
+                  ],
                 ),
               ),
-            ),
-            child: const RoundFormScreen(),
-          ),
-          SizedBox(
-            width: size.width * ContainerSize.smallContainerWidthFactor,
-            height: size.height,
-            child: const TabletRHSTabContainer(),
-          )
-        ]),
+            ]);
+          },
+        ),
       ),
     );
   }

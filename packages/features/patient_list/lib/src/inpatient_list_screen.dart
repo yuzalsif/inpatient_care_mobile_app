@@ -7,21 +7,28 @@ import 'package:inpatient_repository/inpatient_repository.dart';
 import 'package:patient_list/src/inpatient_list_cubit.dart';
 import './patient_detail_temp_screen.dart';
 
-//TODO: code formatting 
+//TODO: code formatting
 class InpatientListScreen extends StatelessWidget {
+  final InpatientRepository inpatientRepository;
+
+  const InpatientListScreen({super.key, required this.inpatientRepository});
+
   @override
   Widget build(BuildContext context) {
-    final inpatientApi = InpatientApiTemp(urlBuilder: const UrlBuilderTemp());
-    final inpatientRepository = InpatientRepository(remoteApi: inpatientApi);
-
     return BlocProvider(
       create: (context) => InpatientCubit(inpatientRepository),
-      child: InpatientList(),
+      child: InpatientList(
+        inpatientRepository: inpatientRepository,
+      ),
     );
   }
 }
 
 class InpatientList extends StatelessWidget {
+  final InpatientRepository inpatientRepository;
+
+  const InpatientList({super.key, required this.inpatientRepository});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,12 +43,16 @@ class InpatientList extends StatelessWidget {
                 context.read<InpatientCubit>().searchInpatients(searchTerm);
               },
             ),
-            
           ),
-          const SizedBox(height: 16,),
+          const SizedBox(
+            height: 16,
+          ),
           const Padding(
             padding: EdgeInsets.only(left: 16),
-            child: Text('Patients', style: TextStyle(fontSize: 16),),
+            child: Text(
+              'Patients',
+              style: TextStyle(fontSize: 16),
+            ),
           ),
           Expanded(
             child: BlocBuilder<InpatientCubit, InpatientState>(
@@ -52,6 +63,7 @@ class InpatientList extends StatelessWidget {
                   return InpatientListView(
                     inpatients: state.inpatients,
                     hasReachedMax: state.hasReachedMax,
+                    inpatientRepository: inpatientRepository,
                     onScrollEnd: () {
                       context.read<InpatientCubit>().loadMoreInpatients();
                     },
@@ -62,6 +74,7 @@ class InpatientList extends StatelessWidget {
                 } else if (state is InpatientSearchLoaded) {
                   return InpatientListView(
                     inpatients: state.inpatients,
+                    inpatientRepository: inpatientRepository,
                     hasReachedMax: true,
                     onScrollEnd: () {}, // No pagination for search results
                   );
@@ -92,12 +105,14 @@ class InpatientListView extends StatelessWidget {
   final List<Inpatient> inpatients;
   final bool hasReachedMax;
   final VoidCallback onScrollEnd;
+  final InpatientRepository inpatientRepository;
 
   const InpatientListView({
     super.key,
     required this.inpatients,
     required this.hasReachedMax,
     required this.onScrollEnd,
+    required this.inpatientRepository,
   });
 
   @override
@@ -126,8 +141,8 @@ class InpatientListView extends StatelessWidget {
                   sex: inpatient.gender,
                   age: inpatient.age,
                   inpatient: inpatient,
-                  onSelected: (isSelected) {
-                    // Handle selection logic here if needed
+                  onSelected: () {
+                    inpatientRepository.selectInpatient(inpatient);
                   },
                 ),
                 const SizedBox(
@@ -141,14 +156,13 @@ class InpatientListView extends StatelessWidget {
     );
   }
 }
- 
 
- //TODO: to be removed
+//TODO: to be removed
 class PatientCard extends StatefulWidget {
   final String name;
   final String sex;
   final int age;
-  final ValueChanged<bool> onSelected;
+  final VoidCallback onSelected;
   final Inpatient inpatient;
 
   PatientCard(
@@ -169,13 +183,14 @@ class _PatientCardState extends State<PatientCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                InpatientDetailScreen(inpatient: widget.inpatient),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) =>
+        //         InpatientDetailScreen(inpatient: widget.inpatient),
+        //   ),
+        // );
+        widget.onSelected();
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 6),

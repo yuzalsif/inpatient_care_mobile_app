@@ -23,10 +23,13 @@ class InpatientRepository {
   }
 
   void selectInpatient(Inpatient inpatient) {
-    return _selectedInpatientSubject.add(inpatient);
+      _selectedInpatientSubject.add(inpatient);
   }
 
   Stream<Inpatient?> getSelectedInpatient() async* {
+    if (!_selectedInpatientSubject.hasValue) {
+      yield null;
+    }
     yield* _selectedInpatientSubject.stream;
   }
 }

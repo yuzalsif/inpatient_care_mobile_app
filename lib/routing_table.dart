@@ -9,32 +9,33 @@ import 'package:special/special.dart';
 import 'package:nurse_treatment_sheet/nurse_treatment_sheet.dart';
 import 'package:observation_chart/observation_chart.dart';
 import 'package:user_repository/user_repository.dart';
+import 'package:inpatient_repository/inpatient_repository.dart';
 
 Map<String, PageBuilder> buildRoutingTable({
   required RoutemasterDelegate routerDelegate,
   required UserRepository userRepository,
+  required InpatientRepository inpatientRepository,
 }) {
   return {
-    _PathConstants.tabletTabContainerPath: (_) =>
-        MaterialPage(
+    _PathConstants.tabletTabContainerPath: (_) => MaterialPage(
           name: 'tablet_tab_container',
           child: Builder(
             builder: (context) {
-              return const TabletTabContainerScreen();
+              return TabletTabContainerScreen(
+                inpatientRepository: inpatientRepository,
+                userRepository: userRepository,
+              );
             },
           ),
         ),
-    _PathConstants.mobileTabContainerPath: (_) =>
-        CupertinoTabPage(
+    _PathConstants.mobileTabContainerPath: (_) => CupertinoTabPage(
             child: Container(), //TODO: Replace this with an actual widget
             paths: [
               _PathConstants.mobileTabContainerMedicalPath,
               _PathConstants.mobileTabContainerVitalsPath,
               _PathConstants.mobileTabContainerSpecialPath,
-            ]
-        ),
-    _PathConstants.mobileTabContainerMedicalPath: (_) =>
-        MaterialPage(
+            ]),
+    _PathConstants.mobileTabContainerMedicalPath: (_) => MaterialPage(
           name: 'medical',
           child: Builder(
             builder: (context) {
@@ -42,8 +43,7 @@ Map<String, PageBuilder> buildRoutingTable({
             },
           ),
         ),
-    _PathConstants.mobileTabContainerVitalsPath: (_) =>
-        MaterialPage(
+    _PathConstants.mobileTabContainerVitalsPath: (_) => MaterialPage(
           name: 'vitals',
           child: Builder(
             builder: (context) {
@@ -51,8 +51,7 @@ Map<String, PageBuilder> buildRoutingTable({
             },
           ),
         ),
-    _PathConstants.mobileTabContainerSpecialPath: (_) =>
-        MaterialPage(
+    _PathConstants.mobileTabContainerSpecialPath: (_) => MaterialPage(
           name: 'special',
           child: Builder(
             builder: (context) {
@@ -60,8 +59,7 @@ Map<String, PageBuilder> buildRoutingTable({
             },
           ),
         ),
-    _PathConstants.signInPath: (_) =>
-        MaterialPage(
+    _PathConstants.signInPath: (_) => MaterialPage(
           name: 'sign-in',
           fullscreenDialog: true,
           child: Builder(
@@ -77,12 +75,13 @@ Map<String, PageBuilder> buildRoutingTable({
             },
           ),
         ),
-    _PathConstants.inpatientListPath: (_) =>
-        MaterialPage(
+    _PathConstants.inpatientListPath: (_) => MaterialPage(
           name: 'inpatient-list',
           child: Builder(
             builder: (context) {
-              return InpatientListScreen();
+              return InpatientListScreen(
+                inpatientRepository: inpatientRepository,
+              );
             },
           ),
         ),
@@ -97,6 +96,8 @@ class _PathConstants {
   static String get inpatientListPath => '/patient_list';
 
   static String get tabletTabContainerPath => '/tablet_tab_container';
+
+  // static String get tabletTabContainerPath => '/';
 
   static String get mobileTabContainerPath => '/tablet_rhs_tab_container';
 

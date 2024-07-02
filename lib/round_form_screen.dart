@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:component_library/component_library.dart';
+import 'package:inpatient_repository/inpatient_repository.dart';
 import 'package:investigation/investigation.dart';
 import 'package:management/management.dart';
 import 'package:summary/summary.dart';
+import 'package:domain_models/domain_models.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class RoundFormScreen extends StatefulWidget {
-  const RoundFormScreen({super.key});
+  final Inpatient inpatient;
+
+  const RoundFormScreen({super.key, required this.inpatient});
 
   @override
   State<RoundFormScreen> createState() => _RoundFormScreenState();
@@ -22,10 +28,11 @@ class _RoundFormScreenState extends State<RoundFormScreen> {
         body: Padding(
           padding: const EdgeInsets.all(Spacing.mediumLarge),
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            const _PatientCard(
-              patientName: 'YUSUF ABDILLAH',
-              age: '25',
-              gender: "Male",
+            _PatientCard(
+              patientName: widget.inpatient.name,
+              age: widget.inpatient.age.toString(),
+              gender: widget.inpatient.gender,
+              mobileNumber: widget.inpatient.phoneNumber,
             ),
             const SizedBox(height: Spacing.large),
             TabBar(
@@ -45,7 +52,8 @@ class _RoundFormScreenState extends State<RoundFormScreen> {
             const SizedBox(height: Spacing.mediumLarge),
             const Expanded(
               child: Padding(
-                padding: EdgeInsets.only(left: Spacing.xLarge, right: Spacing.xLarge),
+                padding: EdgeInsets.only(
+                    left: Spacing.xLarge, right: Spacing.xLarge),
                 child: TabBarView(children: [
                   SummaryScreen(),
                   InvestigationScreen(),
@@ -64,11 +72,13 @@ class _PatientCard extends StatelessWidget {
   final String patientName;
   final String gender;
   final String age;
+  final String mobileNumber;
 
   const _PatientCard({
     required this.patientName,
     required this.age,
     required this.gender,
+    required this.mobileNumber,
   });
 
   @override
@@ -102,6 +112,7 @@ class _PatientCard extends StatelessWidget {
                 ),
                 _PatientCardInfoRow(label: 'Age:', value: age),
                 _PatientCardInfoRow(label: 'Sex:', value: gender),
+                _PatientCardInfoRow(label: 'Contacts:', value: mobileNumber),
               ])
         ],
       ),
@@ -135,6 +146,41 @@ class _PatientCardInfoRow extends StatelessWidget {
           style: TextStyle(
               fontWeight: FontWeight.w500,
               color: const Color(0xFF1E1E1E).withOpacity(0.8)),
+        ),
+      ],
+    );
+  }
+}
+
+class _PatientCardPhoneNumberRow extends StatelessWidget {
+  final String phoneNumber;
+
+  const _PatientCardPhoneNumberRow({
+    super.key,
+    required this.phoneNumber,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Contacts:',
+          style:
+              TextStyle(fontWeight: FontWeight.w500, color: Color(0xFF1E1E1E)),
+        ),
+        const SizedBox(width: Spacing.xSmall),
+        GestureDetector(
+          onTap: () {
+            launchUrlString('tel://$phoneNumber');
+          },
+          child: Text(
+            phoneNumber,
+            style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: const Color(0xFF3579F8).withOpacity(0.8)),
+          ),
         ),
       ],
     );

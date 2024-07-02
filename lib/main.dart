@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:inpatient_api/inpatient_api.dart';
 import 'package:inpatient_care_mobile_app/routing_table.dart';
+import 'package:inpatient_repository/inpatient_repository.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:user_repository/user_repository.dart';
 
@@ -19,8 +20,15 @@ class InpatientCareMobileApp extends StatefulWidget {
 class _InpatientCareMobileAppState extends State<InpatientCareMobileApp> {
   late final InpatientApi _inpatientApi = InpatientApi();
 
+  //TODO: Use InpatientApi instead of InpatientApiTemp
+  late final InpatientApiTemp _inpatientApiTemp = InpatientApiTemp(urlBuilder: const UrlBuilderTemp());
+
   late final _userRepository = UserRepository(
     remoteApi: _inpatientApi,
+  );
+
+  late final _inpatientRepository = InpatientRepository(
+    remoteApi: _inpatientApiTemp,
   );
 
   late final RoutemasterDelegate _routerDelegate = RoutemasterDelegate(
@@ -29,6 +37,7 @@ class _InpatientCareMobileAppState extends State<InpatientCareMobileApp> {
         routes: buildRoutingTable(
           routerDelegate: _routerDelegate,
           userRepository: _userRepository,
+          inpatientRepository: _inpatientRepository,
         ),
       );
     },

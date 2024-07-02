@@ -16,6 +16,8 @@ dependencies:
     path: packages/inpatient_api
   user_repository:
     path: packages/user_repository
+  inpatient_repository:
+    path: packages/inpatient_repository
   sign_in:
     path: packages/features/sign_in
   investigation:
@@ -38,6 +40,7 @@ dependencies:
     path: packages/component_library
   google_fonts: ^6.2.1
   flutter_svg: ^2.0.10+1
+  url_launcher: ^6.3.0
 
 
 dev_dependencies:
