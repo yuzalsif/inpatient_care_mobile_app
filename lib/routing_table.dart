@@ -46,14 +46,14 @@ Map<String, PageBuilder> buildRoutingTable({
     //         },
     //       ),
     //     ),
-    _PathConstants.mobileTabContainerVitalsPath: (_) => MaterialPage(
-          name: 'vitals',
-          child: Builder(
-            builder: (context) {
-              return ObservationChartScreen();
-            },
-          ),
-        ),
+    // _PathConstants.mobileTabContainerVitalsPath: (_) => MaterialPage(
+    //       name: 'vitals',
+    //       child: Builder(
+    //         builder: (context) {
+    //           return ObservationChartScreen();
+    //         },
+    //       ),
+    //     ),
     _PathConstants.mobileTabContainerSpecialPath: (_) => MaterialPage(
           name: 'special',
           child: Builder(

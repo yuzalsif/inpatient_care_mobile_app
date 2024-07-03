@@ -77,7 +77,7 @@ class _NurseTreatmentSheetScreenState extends State<NurseTreatmentSheetScreen> {
                           label: 'Save',
                           onPressed: () async {
                             try {
-                              final submissionTime = toIso8601WithMillis(DateTime.now());
+                              final submissionTime = widget.ipdRepository.toIso8601WithMillis(DateTime.now());
                               List<Observation> observations = [];
                               _oralMedicationController.text != ''
                                   ? observations.add(Observation(
@@ -144,17 +144,6 @@ class _NurseTreatmentSheetScreenState extends State<NurseTreatmentSheetScreen> {
         ));
   }
 
-
-  String toIso8601WithMillis(DateTime dateTime) {
-    String y = dateTime.year.toString().padLeft(4, '0');
-    String m = dateTime.month.toString().padLeft(2, '0');
-    String d = dateTime.day.toString().padLeft(2, '0');
-    String h = dateTime.hour.toString().padLeft(2, '0');
-    String min = dateTime.minute.toString().padLeft(2, '0');
-    String sec = dateTime.second.toString().padLeft(2, '0');
-    String ms = (dateTime.millisecond / 1000).toStringAsFixed(3).substring(2);
-    return "$y-$m-${d}T$h:$min:$sec.$ms" + "Z";
-  }
 }
 
 class _InputField extends StatefulWidget {

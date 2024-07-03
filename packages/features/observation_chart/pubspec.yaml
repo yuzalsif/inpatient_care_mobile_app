@@ -10,6 +10,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  ipd_repository:
+    path: ../../ipd_repository
+  user_repository:
+    path: ../../user_repository
+  domain_models:
+    path: ../../domain_models
+  component_library:
+    path: ../../component_library
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'package:component_library/component_library.dart';
 import 'package:inpatient_repository/inpatient_repository.dart';
@@ -8,11 +7,20 @@ import 'package:management/management.dart';
 import 'package:summary/summary.dart';
 import 'package:domain_models/domain_models.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:user_repository/user_repository.dart';
+import 'package:ipd_repository/ipd_repository.dart';
 
 class RoundFormScreen extends StatefulWidget {
   final Inpatient inpatient;
+  final IpdRepository ipdRepository;
+  final UserRepository userRepository;
 
-  const RoundFormScreen({super.key, required this.inpatient});
+  const RoundFormScreen({
+    super.key,
+    required this.inpatient,
+    required this.ipdRepository,
+    required this.userRepository,
+  });
 
   @override
   State<RoundFormScreen> createState() => _RoundFormScreenState();
@@ -50,14 +58,18 @@ class _RoundFormScreenState extends State<RoundFormScreen> {
                   color: Color(0xFF1E1E1E), fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: Spacing.mediumLarge),
-            const Expanded(
+            Expanded(
               child: Padding(
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                     left: Spacing.xLarge, right: Spacing.xLarge),
                 child: TabBarView(children: [
-                  SummaryScreen(),
-                  InvestigationScreen(),
-                  ManagementScreen(),
+                  const SummaryScreen(),
+                  InvestigationScreen(
+                    ipdRepository: widget.ipdRepository,
+                    userRepository: widget.userRepository,
+                    selectedInpatient: widget.inpatient,
+                  ),
+                  const ManagementScreen(),
                 ]),
               ),
             )

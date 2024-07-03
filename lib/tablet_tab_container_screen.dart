@@ -134,6 +134,8 @@ class _TabletTabContainerScreenState extends State<TabletTabContainerScreen> {
                       ),
                       child: RoundFormScreen(
                         inpatient: inpatient,
+                        ipdRepository: widget.ipdRepository,
+                        userRepository: widget.userRepository,
                       ),
                     ),
                     SizedBox(
@@ -232,7 +234,11 @@ class _TabletRHSTabContainerState extends State<TabletRHSTabContainer> {
               selectedInpatient: widget.selectedInpatient,
             );
           case 1:
-            return ObservationChartScreen();
+            return ObservationChartScreen(
+              ipdRepository: widget.ipdRepository,
+              userRepository: widget.userRepository,
+              selectedInpatient: widget.selectedInpatient,
+            );
           case 2:
             return const SpecialScreen();
           default:

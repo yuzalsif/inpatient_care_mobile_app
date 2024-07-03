@@ -10,6 +10,11 @@ class IpdRepository {
 
   final InpatientApi _remoteApi;
 
+  static const Map<String, String> labTest = {
+    'AFB Staining': 'e146a962-710d-48bc-8298-a38527c78dc2',
+    'ASOT (Anti Streptolysin O Test)': '88ddd459-1978-488d-ad12-f0a94fc6af85'
+  };
+
   static const String encounterRole = "240b26f9-dd88-4172-823d-4a8bfeb7841f";
   static const String provider = "63f4da67-1fd7-49e5-b517-cc98a2828127";
   static const encounterTypeIpd = "e22e39fd-7db2-45e7-80f1-60fa0d5a4378";
@@ -32,5 +37,16 @@ class IpdRepository {
 
   Future<String> getInpatientVisitId (String sessionId, String inpatientUuid) async {
     return await _remoteApi.getInpatientVisitId(sessionId, inpatientUuid);
+  }
+
+  String toIso8601WithMillis(DateTime dateTime) {
+    String y = dateTime.year.toString().padLeft(4, '0');
+    String m = dateTime.month.toString().padLeft(2, '0');
+    String d = dateTime.day.toString().padLeft(2, '0');
+    String h = dateTime.hour.toString().padLeft(2, '0');
+    String min = dateTime.minute.toString().padLeft(2, '0');
+    String sec = dateTime.second.toString().padLeft(2, '0');
+    String ms = (dateTime.millisecond / 1000).toStringAsFixed(3).substring(2);
+    return "$y-$m-${d}T$h:$min:$sec.$ms" + "Z";
   }
 }

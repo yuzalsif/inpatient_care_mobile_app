@@ -13,6 +13,12 @@ dependencies:
     path: ../../form_fields
   component_library:
     path: ../../component_library
+  ipd_repository:
+    path: ../../ipd_repository
+  user_repository:
+    path: ../../user_repository
+  domain_models:
+    path: ../../domain_models
 
 
 dev_dependencies:
