@@ -1,6 +1,6 @@
 class Observation {
   final String person;
-  final String obsDateTime;
+  final String obsDatetime;
   final String concept;
   final String value;
   final String location;
@@ -10,7 +10,7 @@ class Observation {
 
   Observation({
     required this.person,
-    required this.obsDateTime,
+    required this.obsDatetime,
     required this.concept,
     required this.value,
     required this.location,

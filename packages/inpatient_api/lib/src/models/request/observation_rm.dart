@@ -5,7 +5,7 @@ part 'observation_rm.g.dart';
 @JsonSerializable(createFactory: false)
 class ObservationRM {
   final String person;
-  final String obsDateTime;
+  final String obsDatetime;
   final String concept;
   final String value;
   final String location;
@@ -15,7 +15,7 @@ class ObservationRM {
 
   ObservationRM({
     required this.person,
-    required this.obsDateTime,
+    required this.obsDatetime,
     required this.concept,
     required this.value,
     required this.location,

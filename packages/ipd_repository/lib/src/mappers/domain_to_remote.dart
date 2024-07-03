@@ -5,7 +5,7 @@ extension ObservationToRemote on Observation {
   ObservationRM toRemote() {
     return ObservationRM(
       person: person,
-      obsDateTime: obsDateTime,
+      obsDatetime: obsDatetime,
       concept: concept,
       value: value,
       location: location,

@@ -39,7 +39,7 @@ class UrlBuilder {
 
   String buildGetInpatientVisitIdUrl(String inpatientUuid) {
     // _checkForBaseUrlBeforeBuildAnyUrl();
-    return 'https://icare-student.dhis2.udsm.ac.tz/openmrs/ws/rest/v1/icare/visit?includeInactive=fals&patient=$inpatientUuid';
+    return 'https://icare-student.dhis2.udsm.ac.tz/openmrs/ws/rest/v1/visit?includeInactive=false&patient=$inpatientUuid&v=custom:(uuid)';
   }
 
 String buildGetInpatientListPageUrl(

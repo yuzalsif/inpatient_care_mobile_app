@@ -76,67 +76,84 @@ class _NurseTreatmentSheetScreenState extends State<NurseTreatmentSheetScreen> {
                       child: RoundFormButton(
                           label: 'Save',
                           onPressed: () async {
-                            final submissionTime =
-                                DateTime.now().toIso8601String();
-                            List<Observation> observations = [];
-                            _oralMedicationController.text != ''
-                                ? observations.add(Observation(
-                                    person: widget.selectedInpatient.id,
-                                    obsDateTime: submissionTime,
-                                    concept: IpdRepository
-                                        .conceptField1NurseTreatmentSheet,
-                                    value: _oralMedicationController.text,
-                                    location: IpdRepository.locationIpd,
-                                    status: "PRELIMINARY",
-                                    voided: false))
-                                : null;
+                            try {
+                              final submissionTime = toIso8601WithMillis(DateTime.now());
+                              List<Observation> observations = [];
+                              _oralMedicationController.text != ''
+                                  ? observations.add(Observation(
+                                  person: widget.selectedInpatient.id,
+                                  obsDatetime: submissionTime,
+                                  concept: IpdRepository
+                                      .conceptField1NurseTreatmentSheet,
+                                  value: _oralMedicationController.text,
+                                  location: IpdRepository.locationIpd,
+                                  status: "PRELIMINARY",
+                                  voided: false))
+                                  : null;
 
-                            _oralInfusionController.text != ''
-                                ? observations.add(Observation(
-                                    person: widget.selectedInpatient.id,
-                                    obsDateTime: submissionTime,
-                                    concept: IpdRepository
-                                        .conceptField2NurseTreatmentSheet,
-                                    value: _oralInfusionController.text,
-                                    location: IpdRepository.locationIpd,
-                                    status: "PRELIMINARY",
-                                    voided: false))
-                                : null;
+                              _oralInfusionController.text != ''
+                                  ? observations.add(Observation(
+                                  person: widget.selectedInpatient.id,
+                                  obsDatetime: submissionTime,
+                                  concept: IpdRepository
+                                      .conceptField2NurseTreatmentSheet,
+                                  value: _oralInfusionController.text,
+                                  location: IpdRepository.locationIpd,
+                                  status: "PRELIMINARY",
+                                  voided: false))
+                                  : null;
 
-                            final encounterProviders = [
-                              EncounterProvider(
-                                  provider: IpdRepository.provider,
-                                  encounterRole: IpdRepository.encounterRole)
-                            ];
+                              final encounterProviders = [
+                                EncounterProvider(
+                                    provider: IpdRepository.provider,
+                                    encounterRole: IpdRepository.encounterRole)
+                              ];
 
-                            final ipdForm = IpdForm(
-                                uuid: IpdRepository.formIDNurseTreatmentSheet);
+                              final ipdForm = IpdForm(
+                                  uuid: IpdRepository.formIDNurseTreatmentSheet);
 
-                            final currentUserSessionId =
-                                await widget.userRepository.getUserSessionId();
-                            final selectedInpatientVisitId =
-                                await widget.ipdRepository.getInpatientVisitId(
-                                    currentUserSessionId ?? '',
-                                    widget.selectedInpatient.id);
+                              final currentUserSessionId =
+                              await widget.userRepository.getUserSessionId();
+                              print("*********SESSEION ID: $currentUserSessionId");
+                              print("*********INPATIENT ID: ${widget.selectedInpatient.id}");
+                              final selectedInpatientVisitId =
+                              await widget.ipdRepository.getInpatientVisitId(
+                                  currentUserSessionId ?? '',
+                                  widget.selectedInpatient.id);
+                              print("**********VISIT ID: $selectedInpatientVisitId");
+                              final encounter = Encounter(
+                                patient: widget.selectedInpatient.id,
+                                encounterType: IpdRepository.encounterTypeIpd,
+                                encounterProviders: encounterProviders,
+                                visit: selectedInpatientVisitId,
+                                observations: observations,
+                                ipdForm: ipdForm,
+                                location: IpdRepository.locationIpd,
+                              );
 
-                            final encounter = Encounter(
-                              patient: widget.selectedInpatient.id,
-                              encounterType: IpdRepository.encounterTypeIpd,
-                              encounterProviders: encounterProviders,
-                              visit: selectedInpatientVisitId,
-                              observations: observations,
-                              ipdForm: ipdForm,
-                              location: IpdRepository.locationIpd,
-                            );
-
-                            await widget.ipdRepository.createEncounter(
-                                encounter, currentUserSessionId ?? '');
+                              await widget.ipdRepository.createEncounter(
+                                  encounter, currentUserSessionId ?? '');
+                            } catch (e) {
+                              print("****************ERRORRRR: ${e.toString()}");
+                            }
                           })),
                 ],
               ),
             ),
           ),
         ));
+  }
+
+
+  String toIso8601WithMillis(DateTime dateTime) {
+    String y = dateTime.year.toString().padLeft(4, '0');
+    String m = dateTime.month.toString().padLeft(2, '0');
+    String d = dateTime.day.toString().padLeft(2, '0');
+    String h = dateTime.hour.toString().padLeft(2, '0');
+    String min = dateTime.minute.toString().padLeft(2, '0');
+    String sec = dateTime.second.toString().padLeft(2, '0');
+    String ms = (dateTime.millisecond / 1000).toStringAsFixed(3).substring(2);
+    return "$y-$m-${d}T$h:$min:$sec.$ms" + "Z";
   }
 }
 

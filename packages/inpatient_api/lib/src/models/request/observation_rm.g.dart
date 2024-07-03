@@ -9,7 +9,7 @@ part of 'observation_rm.dart';
 Map<String, dynamic> _$ObservationRMToJson(ObservationRM instance) =>
     <String, dynamic>{
       'person': instance.person,
-      'obsDateTime': instance.obsDateTime,
+      'obsDatetime': instance.obsDatetime,
       'concept': instance.concept,
       'value': instance.value,
       'location': instance.location,

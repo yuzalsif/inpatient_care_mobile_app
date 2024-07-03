@@ -52,7 +52,7 @@ class EncounterRM {
   }
 
   static Map<String, dynamic> _ipdFormToJson(IpdFormRM? ipdForm) =>
-      {if (ipdForm != null) 'form': ipdForm.toJson() else 'form': null};
+      {if (ipdForm != null) "uuid": ipdForm.uuid else 'uuid': null};
 
   Map<String, dynamic> toJson() => _$EncounterRMToJson(this);
 }
