@@ -20,6 +20,7 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
   @override
   Widget build(BuildContext context) {
     return DropdownMenu(
+      width: 426,
       label: Text(widget.helperText),
       dropdownMenuEntries: widget.dropDownMenuEntries,
       onSelected: widget.onSelected,

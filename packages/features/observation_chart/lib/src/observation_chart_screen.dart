@@ -34,6 +34,8 @@ class _ObservationChartScreenState extends State<ObservationChartScreen> {
 
   final TextEditingController _diastolicController = TextEditingController();
 
+  bool isSubmissionInProgress = false;
+
   @override
   void dispose() {
     _weightController.dispose();
@@ -67,14 +69,14 @@ class _ObservationChartScreenState extends State<ObservationChartScreen> {
                 const SizedBox(
                   height: Spacing.xLarge,
                 ),
-                _buildObservationChartTextField(
-                  labelText: 'Weight in kg',
+                CustomInputTextField(
+                  labelText: 'Weight in Kg',
                   controller: _weightController,
                 ),
                 const SizedBox(
                   height: Spacing.xLarge,
                 ),
-                _buildObservationChartTextField(
+                CustomInputTextField(
                   labelText: 'Temperature',
                   controller: _temperatureController,
                   helperText: '(36 - 37) Celsius',
@@ -82,7 +84,7 @@ class _ObservationChartScreenState extends State<ObservationChartScreen> {
                 const SizedBox(
                   height: Spacing.xLarge,
                 ),
-                _buildObservationChartTextField(
+                CustomInputTextField(
                   labelText: 'Pulse',
                   controller: _pulseController,
                   helperText: '(0 -230) beats/min',
@@ -90,7 +92,7 @@ class _ObservationChartScreenState extends State<ObservationChartScreen> {
                 const SizedBox(
                   height: Spacing.xLarge,
                 ),
-                _buildObservationChartTextField(
+                CustomInputTextField(
                   labelText: 'Respiratory rate',
                   controller: _respiratoryRateController,
                   helperText: '(12 - 16) breaths/min',
@@ -98,7 +100,7 @@ class _ObservationChartScreenState extends State<ObservationChartScreen> {
                 const SizedBox(
                   height: Spacing.xLarge,
                 ),
-                _buildObservationChartTextField(
+                CustomInputTextField(
                   labelText: 'Systolic',
                   controller: _systolicController,
                   helperText: '(110 - 140) mmHg',
@@ -106,7 +108,7 @@ class _ObservationChartScreenState extends State<ObservationChartScreen> {
                 const SizedBox(
                   height: Spacing.xLarge,
                 ),
-                _buildObservationChartTextField(
+                CustomInputTextField(
                   labelText: 'Diastolic',
                   controller: _diastolicController,
                   helperText: '(70 -85) mmHg',
@@ -115,121 +117,142 @@ class _ObservationChartScreenState extends State<ObservationChartScreen> {
                   height: Spacing.xxxLarge,
                 ),
                 Center(
-                  child: RoundFormButton(
-                      label: 'Save',
-                      onPressed: () async {
-                        try {
-                          final submissionTime = widget.ipdRepository
-                              .toIso8601WithMillis(DateTime.now());
-                          List<Observation> observations = [];
-                          _weightController.text != ''
-                              ? observations.add(Observation(
-                                  person: widget.selectedInpatient.id,
-                                  obsDatetime: submissionTime,
-                                  concept: IpdRepository
-                                      .conceptWeightObservationChart,
-                                  value: _weightController.text,
-                                  location: IpdRepository.locationIpd,
-                                  status: "PRELIMINARY",
-                                  voided: false))
-                              : null;
+                  child: isSubmissionInProgress
+                      ? RoundFormButton.inProgress(label: 'saving')
+                      : RoundFormButton(
+                          label: 'Save',
+                          onPressed: () async {
+                            setState(() {
+                              isSubmissionInProgress = true;
+                            });
+                            try {
+                              final submissionTime = widget.ipdRepository
+                                  .toIso8601WithMillis(DateTime.now());
+                              List<Observation> observations = [];
+                              _weightController.text != ''
+                                  ? observations.add(Observation(
+                                      person: widget.selectedInpatient.id,
+                                      obsDatetime: submissionTime,
+                                      concept: IpdRepository
+                                          .conceptWeightObservationChart,
+                                      value: _weightController.text,
+                                      location: IpdRepository.locationIpd,
+                                      status: "PRELIMINARY",
+                                      voided: false))
+                                  : null;
 
-                          _temperatureController.text != ''
-                              ? observations.add(Observation(
-                                  person: widget.selectedInpatient.id,
-                                  obsDatetime: submissionTime,
-                                  concept: IpdRepository
-                                      .conceptTemperatureObservationChart,
-                                  value: _temperatureController.text,
-                                  location: IpdRepository.locationIpd,
-                                  status: "PRELIMINARY",
-                                  voided: false))
-                              : null;
+                              _temperatureController.text != ''
+                                  ? observations.add(Observation(
+                                      person: widget.selectedInpatient.id,
+                                      obsDatetime: submissionTime,
+                                      concept: IpdRepository
+                                          .conceptTemperatureObservationChart,
+                                      value: _temperatureController.text,
+                                      location: IpdRepository.locationIpd,
+                                      status: "PRELIMINARY",
+                                      voided: false))
+                                  : null;
 
-                          _pulseController.text != ''
-                              ? observations.add(Observation(
-                                  person: widget.selectedInpatient.id,
-                                  obsDatetime: submissionTime,
-                                  concept: IpdRepository
-                                      .conceptPulseObservationChart,
-                                  value: _pulseController.text,
-                                  location: IpdRepository.locationIpd,
-                                  status: "PRELIMINARY",
-                                  voided: false))
-                              : null;
+                              _pulseController.text != ''
+                                  ? observations.add(Observation(
+                                      person: widget.selectedInpatient.id,
+                                      obsDatetime: submissionTime,
+                                      concept: IpdRepository
+                                          .conceptPulseObservationChart,
+                                      value: _pulseController.text,
+                                      location: IpdRepository.locationIpd,
+                                      status: "PRELIMINARY",
+                                      voided: false))
+                                  : null;
 
-                          _respiratoryRateController.text != ''
-                              ? observations.add(Observation(
-                                  person: widget.selectedInpatient.id,
-                                  obsDatetime: submissionTime,
-                                  concept: IpdRepository
-                                      .conceptRespiratoryRateObservationChart,
-                                  value: _respiratoryRateController.text,
-                                  location: IpdRepository.locationIpd,
-                                  status: "PRELIMINARY",
-                                  voided: false))
-                              : null;
+                              _respiratoryRateController.text != ''
+                                  ? observations.add(Observation(
+                                      person: widget.selectedInpatient.id,
+                                      obsDatetime: submissionTime,
+                                      concept: IpdRepository
+                                          .conceptRespiratoryRateObservationChart,
+                                      value: _respiratoryRateController.text,
+                                      location: IpdRepository.locationIpd,
+                                      status: "PRELIMINARY",
+                                      voided: false))
+                                  : null;
 
-                          _systolicController.text != ''
-                              ? observations.add(Observation(
-                                  person: widget.selectedInpatient.id,
-                                  obsDatetime: submissionTime,
-                                  concept: IpdRepository
-                                      .conceptSystolicObservationChart,
-                                  value: _systolicController.text,
-                                  location: IpdRepository.locationIpd,
-                                  status: "PRELIMINARY",
-                                  voided: false))
-                              : null;
+                              _systolicController.text != ''
+                                  ? observations.add(Observation(
+                                      person: widget.selectedInpatient.id,
+                                      obsDatetime: submissionTime,
+                                      concept: IpdRepository
+                                          .conceptSystolicObservationChart,
+                                      value: _systolicController.text,
+                                      location: IpdRepository.locationIpd,
+                                      status: "PRELIMINARY",
+                                      voided: false))
+                                  : null;
 
-                          _diastolicController.text != ''
-                              ? observations.add(Observation(
-                                  person: widget.selectedInpatient.id,
-                                  obsDatetime: submissionTime,
-                                  concept: IpdRepository
-                                      .conceptDiastolicObservationChart,
-                                  value: _diastolicController.text,
-                                  location: IpdRepository.locationIpd,
-                                  status: "PRELIMINARY",
-                                  voided: false))
-                              : null;
+                              _diastolicController.text != ''
+                                  ? observations.add(Observation(
+                                      person: widget.selectedInpatient.id,
+                                      obsDatetime: submissionTime,
+                                      concept: IpdRepository
+                                          .conceptDiastolicObservationChart,
+                                      value: _diastolicController.text,
+                                      location: IpdRepository.locationIpd,
+                                      status: "PRELIMINARY",
+                                      voided: false))
+                                  : null;
 
-                          final encounterProviders = [
-                            EncounterProvider(
-                                provider: IpdRepository.provider,
-                                encounterRole: IpdRepository.encounterRole)
-                          ];
+                              final encounterProviders = [
+                                EncounterProvider(
+                                    provider: IpdRepository.provider,
+                                    encounterRole: IpdRepository.encounterRole)
+                              ];
 
-                          final ipdForm = IpdForm(
-                              uuid: IpdRepository.formIDObservationChart);
+                              final ipdForm = IpdForm(
+                                  uuid: IpdRepository.formIDObservationChart);
 
-                          final currentUserSessionId =
-                              await widget.userRepository.getUserSessionId();
-                          print("*********SESSEION ID: $currentUserSessionId");
-                          print(
-                              "*********INPATIENT ID: ${widget.selectedInpatient.id}");
-                          final selectedInpatientVisitId =
-                              await widget.ipdRepository.getInpatientVisitId(
-                                  currentUserSessionId ?? '',
-                                  widget.selectedInpatient.id);
-                          print(
-                              "**********VISIT ID: $selectedInpatientVisitId");
-                          final encounter = Encounter(
-                            patient: widget.selectedInpatient.id,
-                            encounterType: IpdRepository.encounterTypeIpd,
-                            encounterProviders: encounterProviders,
-                            visit: selectedInpatientVisitId,
-                            observations: observations,
-                            ipdForm: ipdForm,
-                            location: IpdRepository.locationIpd,
-                          );
+                              final currentUserSessionId = await widget
+                                  .userRepository
+                                  .getUserSessionId();
+                              print(
+                                  "*********SESSEION ID: $currentUserSessionId");
+                              print(
+                                  "*********INPATIENT ID: ${widget.selectedInpatient.id}");
+                              final selectedInpatientVisitId = await widget
+                                  .ipdRepository
+                                  .getInpatientVisitId(
+                                      currentUserSessionId ?? '',
+                                      widget.selectedInpatient.id);
+                              print(
+                                  "**********VISIT ID: $selectedInpatientVisitId");
+                              final encounter = Encounter(
+                                patient: widget.selectedInpatient.id,
+                                encounterType: IpdRepository.encounterTypeIpd,
+                                encounterProviders: encounterProviders,
+                                visit: selectedInpatientVisitId,
+                                observations: observations,
+                                ipdForm: ipdForm,
+                                location: IpdRepository.locationIpd,
+                              );
 
-                          await widget.ipdRepository.createEncounter(
-                              encounter, currentUserSessionId ?? '');
-                        } catch (e) {
-                          print("****************ERRORRRR: ${e.toString()}");
-                        }
-                      }),
+                              await widget.ipdRepository.createEncounter(
+                                  encounter, currentUserSessionId ?? '');
+
+                              //Show success snack Bar
+                              ScaffoldMessenger.of(context)
+                                ..hideCurrentSnackBar()
+                                ..showSnackBar(
+                                 const SnackBar(
+                                    content: Text('Saved data successfully'),
+                                  )
+                                );
+                              setState(() {
+                                isSubmissionInProgress = false;
+                              });
+                            } catch (e) {
+                              print(
+                                  "****************ERRORRRR: ${e.toString()}");
+                            }
+                          }),
                 )
               ],
             ),
