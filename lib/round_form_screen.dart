@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:component_library/component_library.dart';
-import 'package:inpatient_repository/inpatient_repository.dart';
 import 'package:investigation/investigation.dart';
 import 'package:management/management.dart';
 import 'package:summary/summary.dart';
@@ -69,7 +68,11 @@ class _RoundFormScreenState extends State<RoundFormScreen> {
                     userRepository: widget.userRepository,
                     selectedInpatient: widget.inpatient,
                   ),
-                  const ManagementScreen(),
+                  ManagementScreen(
+                    ipdRepository: widget.ipdRepository,
+                    userRepository: widget.userRepository,
+                    selectedInpatient: widget.inpatient,
+                  ),
                 ]),
               ),
             )

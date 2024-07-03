@@ -82,7 +82,8 @@ class InpatientApi {
     await request.send();
   }
 
-  Future<void> createEncounter(EncounterRM encounter, String sessionId) async {
+  Future<String> createEncounter(
+      EncounterRM encounter, String sessionId) async {
     try {
       final url = _urlBuilder.buildEncounterUrl();
       var headersList = {
@@ -124,8 +125,37 @@ class InpatientApi {
       }
       print("**************RESPONSE BODY $resBody");
       print('**********ENCOUNTER CREATED SUCCESSFULLY');
+      final jsonBody = jsonDecode(resBody);
+      return jsonBody['uuid'] as String;
     } catch (e) {
       print('**********FAILED to create ENCOUNTER ERROR: $e');
+      throw 'Failed to create encounter: $e';
+    }
+  }
+
+  Future<void> updateEncounter({
+    required String authenticationToken,
+    required String encounterUuid,
+    required Map<String, dynamic> observations,
+}) async {
+    try {
+      final url = _urlBuilder.buildEncounterUrl();
+      var headersList = {
+        "Accept": "*/*",
+        "Access-Control-Allow-Origin": "*",
+        "Authorization": "Basic $authenticationToken",
+        'Content-Type': 'application/json'
+      };
+      var encounterUrl = Uri.parse('$url/$encounterUuid');
+
+      var request = http.Request('POST', encounterUrl);
+      request.headers.addAll(headersList);
+
+      request.body = jsonEncode(observations);
+
+      await request.send();
+    } catch (e) {
+      throw 'Failed to update encounter: $e';
     }
   }
 

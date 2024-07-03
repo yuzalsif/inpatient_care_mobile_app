@@ -26,6 +26,13 @@ class _InvestigationScreenState extends State<InvestigationScreen> {
   final TextEditingController _remarksController = TextEditingController();
 
   @override
+  void dispose() {
+    _testController.dispose();
+    _remarksController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: Spacing.xxLarge),
@@ -44,14 +51,12 @@ class _InvestigationScreenState extends State<InvestigationScreen> {
           ),
           CustomDropDownMenu(
             dropDownMenuEntries: <DropdownMenuEntry<String>>[
-              DropdownMenuEntry<String>(
-                label: IpdRepository.labTest.keys.first,
-                value: IpdRepository.labTest.values.first,
-              ),
-              DropdownMenuEntry<String>(
-                label: IpdRepository.labTest.keys.last,
-                value: IpdRepository.labTest.values.last,
-              ),
+              ...IpdRepository.labTest.entries.map((entry) {
+                return DropdownMenuEntry<String>(
+                  value: entry.value,
+                  label: entry.key,
+                );
+              }),
             ],
             onSelected: (labTestConcept) {
               if (labTestConcept != null) _testController.text = labTestConcept;
@@ -68,49 +73,57 @@ class _InvestigationScreenState extends State<InvestigationScreen> {
           const SizedBox(
             height: Spacing.xxLarge,
           ),
-          Center(child: RoundFormButton(label: "Request", onPressed: () async {
-            final submissionTime = widget.ipdRepository.toIso8601WithMillis(DateTime.now());
-            List<Order> orders = [];
+          Center(
+              child: RoundFormButton(
+                  label: "Request",
+                  onPressed: () async {
+                    try {
+                      List<Order> orders = [];
 
-            // _testController.text != ''
-            //     ? orders.add(Order(
-            //     patient: widget.selectedInpatient.id,
-            //     orderDatetime: submissionTime,
-            //     concept: _testController.text,
-            //     orderer: IpdRepository.provider,
-            //     orderType: IpdRepository.orderTypeInvestigation,
-            //     instructions: _remarksController.text,
-            //     voided: false))
-            //     : null;
+                      _testController.text != ''
+                          ? orders.add(Order(
+                              patient: widget.selectedInpatient.id,
+                              action: "NEW",
+                              careSetting: "INPATIENT",
+                              concept: _testController.text,
+                              orderer: IpdRepository.provider,
+                              orderType: IpdRepository.orderTypeInvestigation,
+                              instructions: _remarksController.text,
+                              urgency: "ROUTINE",
+                              type: "testorder",
+                            ))
+                          : null;
 
-            final encounterProviders = [
-              EncounterProvider(
-                  provider: IpdRepository.provider,
-                  encounterRole: IpdRepository.encounterRole)
-            ];
+                      final encounterProviders = [
+                        EncounterProvider(
+                            provider: IpdRepository.provider,
+                            encounterRole: IpdRepository.encounterRole)
+                      ];
 
-            final currentUserSessionId =
-                await widget.userRepository.getUserSessionId();
-            print("*********SESSEION ID: $currentUserSessionId");
-            print("*********INPATIENT ID: ${widget.selectedInpatient.id}");
-            final selectedInpatientVisitId =
-                await widget.ipdRepository.getInpatientVisitId(
-                currentUserSessionId ?? '',
-                widget.selectedInpatient.id);
-            print("**********VISIT ID: $selectedInpatientVisitId");
-            // final encounter = Encounter(
-            //   patient: widget.selectedInpatient.id,
-            //   encounterType: IpdRepository.encounterTypeIpd,
-            //   encounterProviders: encounterProviders,
-            //   visit: selectedInpatientVisitId,
-            //   observations: observations,
-            //   ipdForm: ipdForm,
-            //   location: IpdRepository.locationIpd,
-            // );
+                      final currentUserSessionId =
+                          await widget.userRepository.getUserSessionId();
+                      print("*********SESSEION ID: $currentUserSessionId");
+                      print(
+                          "*********INPATIENT ID: ${widget.selectedInpatient.id}");
+                      final selectedInpatientVisitId =
+                          await widget.ipdRepository.getInpatientVisitId(
+                              currentUserSessionId ?? '',
+                              widget.selectedInpatient.id);
+                      print("**********VISIT ID: $selectedInpatientVisitId");
+                      final encounter = Encounter(
+                        patient: widget.selectedInpatient.id,
+                        encounterType: IpdRepository.encounterTypeClinic,
+                        order: orders,
+                        encounterProviders: encounterProviders,
+                        visit: selectedInpatientVisitId,
+                      );
 
-            // await widget.ipdRepository.createEncounter(
-            //     encounter, currentUserSessionId ?? '');
-          }))
+                      await widget.ipdRepository.createEncounter(
+                          encounter, currentUserSessionId ?? '');
+                    } catch (e) {
+                      print("**********ERROR: $e");
+                    }
+                  }))
         ],
       ),
     );

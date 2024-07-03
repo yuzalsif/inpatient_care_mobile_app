@@ -58,7 +58,7 @@ extension EncounterToRemote on Encounter {
       observations: observations?.map((e) => e.toRemote()).toList(),
       encounterProviders: encounterProviders.map((e) => e.toRemote()).toList(),
       location: location,
-      order: order?.map((e) => e.toRemote()).toList(),
+      orders: order?.map((e) => e.toRemote()).toList(),
       ipdForm: ipdForm?.toRemote(),
     );
   }

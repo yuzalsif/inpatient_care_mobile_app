@@ -24,6 +24,6 @@ class CustomInputTextField extends StatelessWidget {
         helperStyle: const TextStyle(fontSize: 14, color: Color(0xff545454)),
         border: InputBorder.none,
       ),
-    );;
+    );
   }
 }
