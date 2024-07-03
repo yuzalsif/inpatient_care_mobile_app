@@ -17,6 +17,13 @@ class IpdRepository {
   static const conceptField1NurseTreatmentSheet = "14c61bde-dc18-4ab6-be9f-5b66a1d324cb";
   static const conceptField2NurseTreatmentSheet = "a7877534-4907-45b6-b020-7e4b8df08e69";
   static const formIDNurseTreatmentSheet = "6cbbe28d-884c-4c82-895d-8c7458c7d0a3";
+  static const formIDObservationChart = "2a7d282f-a97a-4618-9515-9c0028d575d8";
+  static const conceptWeightObservationChart = "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+  static const conceptRespiratoryRateObservationChart = "5242AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+  static const conceptTemperatureObservationChart = "c37bd733-3f10-11e4-adec-0800271c1b75";
+  static const conceptPulseObservationChart = "5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+  static const conceptDiastolicObservationChart = "c379aa1d-3f10-11e4-adec-0800271c1b75";
+  static const conceptSystolicObservationChart = "c36e9c8b-3f10-11e4-adec-0800271c1b75";
 
   Future<void> createEncounter(Encounter encounter, String sessionId) async {
     final encounterRM = encounter.toRemote();
