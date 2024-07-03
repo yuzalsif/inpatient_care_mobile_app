@@ -105,6 +105,11 @@ class InpatientApi {
         encounterJson.remove('order');
       }
 
+      if (encounterJson['form'] != null &&
+          encounterJson['form']['uuid'] == null) {
+        encounterJson.remove('form');
+      }
+
       request.body = jsonEncode(encounterJson);
       print("**********ENCOUNTER BODY: ${request.body}");
       final res = await request.send();
@@ -114,8 +119,10 @@ class InpatientApi {
       if (res.statusCode >= 200 && res.statusCode < 300) {
         print("**************RESPONSE BODY $resBody");
       } else {
-        print("**************RESPONSE ERROR ${res.reasonPhrase} and $resBody} ************");
+        print(
+            "**************RESPONSE ERROR ${res.reasonPhrase} and $resBody} ************");
       }
+      print("**************RESPONSE BODY $resBody");
       print('**********ENCOUNTER CREATED SUCCESSFULLY');
     } catch (e) {
       print('**********FAILED to create ENCOUNTER ERROR: $e');

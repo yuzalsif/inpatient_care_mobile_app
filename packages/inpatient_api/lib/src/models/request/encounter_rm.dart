@@ -17,7 +17,7 @@ class EncounterRM {
   @JsonKey(name: 'form', toJson: _ipdFormToJson)
   final IpdFormRM? ipdForm;
   @JsonKey(toJson: _ordersToJson)
-  final List<OrderRM>? order;
+  final List<OrderRM>? orders;
 
   EncounterRM({
     required this.patient,
@@ -27,7 +27,7 @@ class EncounterRM {
     required this.visit,
     this.observations,
     this.ipdForm,
-    this.order,
+    this.orders,
   });
 
   static List<Map<String, dynamic>> _encounterProvidersToJson(
