@@ -32,51 +32,54 @@ class _RoundFormScreenState extends State<RoundFormScreen> {
       length: 3,
       child: Scaffold(
         backgroundColor: const Color(0xFFF5F5F5),
-        body: Padding(
-          padding: const EdgeInsets.all(Spacing.mediumLarge),
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            _PatientCard(
-              patientName: widget.inpatient.name,
-              age: widget.inpatient.age.toString(),
-              gender: widget.inpatient.gender,
-              mobileNumber: widget.inpatient.phoneNumber,
-            ),
-            const SizedBox(height: Spacing.large),
-            TabBar(
-              tabs: const [
-                Text('Summary'),
-                Text('Diagnosis'),
-                Text('Management'),
-              ],
-              dividerColor: Colors.transparent,
-              indicatorColor: const Color(0xFF3579F8).withOpacity(0.9),
-              unselectedLabelStyle: TextStyle(
-                  color: const Color(0xFF1E1E1E).withOpacity(0.8),
-                  fontWeight: FontWeight.w500),
-              labelStyle: const TextStyle(
-                  color: Color(0xFF1E1E1E), fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(height: Spacing.mediumLarge),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    left: Spacing.xLarge, right: Spacing.xLarge),
-                child: TabBarView(children: [
-                  const SummaryScreen(),
-                  InvestigationScreen(
-                    ipdRepository: widget.ipdRepository,
-                    userRepository: widget.userRepository,
-                    selectedInpatient: widget.inpatient,
-                  ),
-                  ManagementScreen(
-                    ipdRepository: widget.ipdRepository,
-                    userRepository: widget.userRepository,
-                    selectedInpatient: widget.inpatient,
-                  ),
-                ]),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(Spacing.mediumLarge),
+            child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              _PatientCard(
+                patientName: widget.inpatient.name,
+                age: widget.inpatient.age.toString(),
+                gender: widget.inpatient.gender,
+                mobileNumber: widget.inpatient.phoneNumber,
               ),
-            )
-          ]),
+              const SizedBox(height: Spacing.large),
+              TabBar(
+                tabs: const [
+                  Text('Summary'),
+                  Text('Diagnosis'),
+                  Text('Management'),
+                ],
+                dividerColor: Colors.transparent,
+                indicatorColor: const Color(0xFF3579F8).withOpacity(0.9),
+                unselectedLabelStyle: TextStyle(
+                    color: const Color(0xFF1E1E1E).withOpacity(0.8),
+                    fontWeight: FontWeight.w500),
+                labelStyle: const TextStyle(
+                    color: Color(0xFF1E1E1E), fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(height: Spacing.mediumLarge),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.6,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: Spacing.xLarge, right: Spacing.xLarge),
+                  child: TabBarView(children: [
+                    const SummaryScreen(),
+                    InvestigationScreen(
+                      ipdRepository: widget.ipdRepository,
+                      userRepository: widget.userRepository,
+                      selectedInpatient: widget.inpatient,
+                    ),
+                    ManagementScreen(
+                      ipdRepository: widget.ipdRepository,
+                      userRepository: widget.userRepository,
+                      selectedInpatient: widget.inpatient,
+                    ),
+                  ]),
+                ),
+              )
+            ]),
+          ),
         ),
       ),
     );
