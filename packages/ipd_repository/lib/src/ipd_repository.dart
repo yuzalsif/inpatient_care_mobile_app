@@ -18,6 +18,8 @@ class IpdRepository {
   static const String encounterRole = "240b26f9-dd88-4172-823d-4a8bfeb7841f";
   static const String provider = "63f4da67-1fd7-49e5-b517-cc98a2828127";
   static const encounterTypeIpd = "e22e39fd-7db2-45e7-80f1-60fa0d5a4378";
+  static const encounterTypeClinic = "d7151f82-c1f3-4152-a605-2f9ea7414a79";
+  static const orderTypeInvestigation = "52a447d3-a64a-11e3-9aeb-50e549534c5e";
   static const locationIpd = "b1a8b05e-3542-4037-bbd3-998ee9c40574";
   static const conceptField1NurseTreatmentSheet = "14c61bde-dc18-4ab6-be9f-5b66a1d324cb";
   static const conceptField2NurseTreatmentSheet = "a7877534-4907-45b6-b020-7e4b8df08e69";

@@ -10,7 +10,8 @@ class InvestigationScreen extends StatefulWidget {
   final UserRepository userRepository;
   final Inpatient selectedInpatient;
 
-  const InvestigationScreen({super.key,
+  const InvestigationScreen({
+    super.key,
     required this.ipdRepository,
     required this.userRepository,
     required this.selectedInpatient,
@@ -41,16 +42,22 @@ class _InvestigationScreenState extends State<InvestigationScreen> {
           const SizedBox(
             height: Spacing.xxLarge,
           ),
-         CustomDropDownMenu(dropDownMenuEntries: <DropdownMenuEntry<String>>[
-            DropdownMenuEntry<String>(
-              label: IpdRepository.labTest.keys.first,
-              value: IpdRepository.labTest.values.first,
-            ),
-            DropdownMenuEntry<String>(
-              label: IpdRepository.labTest.keys.last,
-              value: IpdRepository.labTest.values.last,
-            ),
-         ], onSelected: (dynamic){}, helperText: 'Test',),
+          CustomDropDownMenu(
+            dropDownMenuEntries: <DropdownMenuEntry<String>>[
+              DropdownMenuEntry<String>(
+                label: IpdRepository.labTest.keys.first,
+                value: IpdRepository.labTest.values.first,
+              ),
+              DropdownMenuEntry<String>(
+                label: IpdRepository.labTest.keys.last,
+                value: IpdRepository.labTest.values.last,
+              ),
+            ],
+            onSelected: (labTestConcept) {
+              if (labTestConcept != null) _testController.text = labTestConcept;
+            },
+            helperText: 'Test',
+          ),
           const SizedBox(
             height: Spacing.medium,
           ),
@@ -61,7 +68,49 @@ class _InvestigationScreenState extends State<InvestigationScreen> {
           const SizedBox(
             height: Spacing.xxLarge,
           ),
-          Center(child: RoundFormButton(label: "Request", onPressed: () {}))
+          Center(child: RoundFormButton(label: "Request", onPressed: () async {
+            final submissionTime = widget.ipdRepository.toIso8601WithMillis(DateTime.now());
+            List<Order> orders = [];
+
+            // _testController.text != ''
+            //     ? orders.add(Order(
+            //     patient: widget.selectedInpatient.id,
+            //     orderDatetime: submissionTime,
+            //     concept: _testController.text,
+            //     orderer: IpdRepository.provider,
+            //     orderType: IpdRepository.orderTypeInvestigation,
+            //     instructions: _remarksController.text,
+            //     voided: false))
+            //     : null;
+
+            final encounterProviders = [
+              EncounterProvider(
+                  provider: IpdRepository.provider,
+                  encounterRole: IpdRepository.encounterRole)
+            ];
+
+            final currentUserSessionId =
+                await widget.userRepository.getUserSessionId();
+            print("*********SESSEION ID: $currentUserSessionId");
+            print("*********INPATIENT ID: ${widget.selectedInpatient.id}");
+            final selectedInpatientVisitId =
+                await widget.ipdRepository.getInpatientVisitId(
+                currentUserSessionId ?? '',
+                widget.selectedInpatient.id);
+            print("**********VISIT ID: $selectedInpatientVisitId");
+            // final encounter = Encounter(
+            //   patient: widget.selectedInpatient.id,
+            //   encounterType: IpdRepository.encounterTypeIpd,
+            //   encounterProviders: encounterProviders,
+            //   visit: selectedInpatientVisitId,
+            //   observations: observations,
+            //   ipdForm: ipdForm,
+            //   location: IpdRepository.locationIpd,
+            // );
+
+            // await widget.ipdRepository.createEncounter(
+            //     encounter, currentUserSessionId ?? '');
+          }))
         ],
       ),
     );
