@@ -1,44 +1,88 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:form_fields/form_fields.dart';
 import 'package:equatable/equatable.dart';
+import 'package:ipd_repository/ipd_repository.dart';
+import 'package:user_repository/user_repository.dart';
+import 'package:domain_models/domain_models.dart';
 
 part 'nurse_treatment_sheet_state.dart';
 
-class InvestigationCubit extends Cubit<NurseTreatmentSheetState> {
-  InvestigationCubit()
-      : super(
-    const NurseTreatmentSheetState(),
-  );
+class NurseTreatmentSheetCubit extends Cubit<NurseTreatmentSheetState> {
+  final IpdRepository ipdRepository;
+  final UserRepository userRepository;
+  final Inpatient selectedInpatient;
 
-  void onSubmit() {
-    final oral = InpatientTextField.validated(state.oral.value);
-    final injection = InpatientTextField.validated(state.injection.value);
+  final TextEditingController oralMedicationController;
+  final TextEditingController oralInfusionController;
 
-    final isFormValid = oral.isValid || injection.isValid;
-
-    final newState = state.copyWith(
-      oral: oral,
-      injection: injection,
-      submissionStatus: isFormValid ? SubmissionStatus.inProgress : null,
-    );
-
-    emit(newState);
-
-    if (isFormValid) {
-      try {
-        //TODO: Implement the submission logic
-        final newState = state.copyWith(
-          submissionStatus: SubmissionStatus.success,
+  NurseTreatmentSheetCubit({
+    required this.ipdRepository,
+    required this.userRepository,
+    required this.selectedInpatient,
+    required this.oralMedicationController,
+    required this.oralInfusionController,
+  }) : super(
+          const NurseTreatmentSheetState(),
         );
-        emit(newState);
-      } catch (error) {
-        final newState = state.copyWith(
-          //TODO: Add a specific error state for the investigation feature
-          submissionStatus: SubmissionStatus.genericError,
-        );
-        emit(newState);
-      }
+
+  void onSubmit() async {
+    emit(state.copyWith(submissionStatus: SubmissionStatus.inProgress));
+    try {
+      final submissionTime = ipdRepository.toIso8601WithMillis(DateTime.now());
+      List<Observation> observations = [];
+      oralMedicationController.text != ''
+          ? observations.add(Observation(
+              person: selectedInpatient.id,
+              obsDatetime: submissionTime,
+              concept: IpdRepository.conceptField1NurseTreatmentSheet,
+              value: oralMedicationController.text,
+              location: IpdRepository.locationIpd,
+              status: "PRELIMINARY",
+              voided: false))
+          : null;
+
+      oralInfusionController.text != ''
+          ? observations.add(Observation(
+              person: selectedInpatient.id,
+              obsDatetime: submissionTime,
+              concept: IpdRepository.conceptField2NurseTreatmentSheet,
+              value: oralInfusionController.text,
+              location: IpdRepository.locationIpd,
+              status: "PRELIMINARY",
+              voided: false))
+          : null;
+
+      final encounterProviders = [
+        EncounterProvider(
+            provider: IpdRepository.provider,
+            encounterRole: IpdRepository.encounterRole)
+      ];
+
+      final ipdForm = IpdForm(uuid: IpdRepository.formIDNurseTreatmentSheet);
+
+      final currentUserSessionId = await userRepository.getUserSessionId();
+      print("*********SESSEION ID: $currentUserSessionId");
+      print("*********INPATIENT ID: ${selectedInpatient.id}");
+      final selectedInpatientVisitId = await ipdRepository.getInpatientVisitId(
+          currentUserSessionId ?? '', selectedInpatient.id);
+      print("**********VISIT ID: $selectedInpatientVisitId");
+      final encounter = Encounter(
+        patient: selectedInpatient.id,
+        encounterType: IpdRepository.encounterTypeIpd,
+        encounterProviders: encounterProviders,
+        visit: selectedInpatientVisitId,
+        observations: observations,
+        ipdForm: ipdForm,
+        location: IpdRepository.locationIpd,
+      );
+
+      await ipdRepository.createEncounter(
+          encounter, currentUserSessionId ?? '');
+      emit(state.copyWith(submissionStatus: SubmissionStatus.success));
+    } catch (e) {
+      print("****************ERRORRRR: ${e.toString()}");
+      emit(state.copyWith(submissionStatus: SubmissionStatus.genericError));
     }
   }
 }

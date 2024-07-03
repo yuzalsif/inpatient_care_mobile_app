@@ -19,7 +19,7 @@ class CustomInputTextField extends StatelessWidget {
         fillColor: Colors.white,
         filled: true,
         labelText: labelText,
-        labelStyle: const TextStyle(fontSize: 18, color: Color(0xff8A8383)),
+        labelStyle: const TextStyle(fontSize: 14, color: Color(0xff8A8383)),
         helperText: helperText,
         helperStyle: const TextStyle(fontSize: 14, color: Color(0xff545454)),
         border: InputBorder.none,

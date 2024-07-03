@@ -36,7 +36,7 @@ class _TabletTabContainerScreenState extends State<TabletTabContainerScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: const Color(0xFFF5F5F5),
+        backgroundColor: const Color(0xFF3579F8).withOpacity(0.08),
         title: const Text(
           'Inpatient Care',
           style: TextStyle(
