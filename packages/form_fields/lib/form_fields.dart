@@ -4,3 +4,4 @@ export 'package:formz/formz.dart'
 export 'src/password.dart';
 export 'src/url.dart';
 export 'src/username.dart';
+export 'src/inpatient_text_field.dart';

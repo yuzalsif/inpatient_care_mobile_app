@@ -1,46 +1,55 @@
+import 'package:component_library/component_library.dart';
 import 'package:domain_models/domain_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:inpatient_api/inpatient_api.dart';
 import 'package:inpatient_repository/inpatient_repository.dart';
 import 'package:patient_list/src/inpatient_list_cubit.dart';
-import './patient_detail_temp_screen.dart';
 
-//TODO: code formatting 
+//TODO: code formatting
 class InpatientListScreen extends StatelessWidget {
+  final InpatientRepository inpatientRepository;
+
+  const InpatientListScreen({super.key, required this.inpatientRepository});
+
   @override
   Widget build(BuildContext context) {
-    final inpatientApi = InpatientApiTemp(urlBuilder: const UrlBuilderTemp());
-    final inpatientRepository = InpatientRepository(remoteApi: inpatientApi);
-
     return BlocProvider(
       create: (context) => InpatientCubit(inpatientRepository),
-      child: InpatientList(),
+      child: const InpatientList(
+      ),
     );
   }
 }
 
 class InpatientList extends StatelessWidget {
+  const InpatientList({super.key,});
+
   @override
   Widget build(BuildContext context) {
+    final inpatientCubit = context.read<InpatientCubit>();
+
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 48, left: 16, right: 16),
+            padding: const EdgeInsets.all(Spacing.mediumLarge),
             child: CustomSearchBar(
               onChanged: (searchTerm) {
-                context.read<InpatientCubit>().searchInpatients(searchTerm);
+                inpatientCubit.searchInpatients(searchTerm);
               },
             ),
-            
           ),
-          const SizedBox(height: 16,),
+          const SizedBox(
+            height: 16,
+          ),
           const Padding(
             padding: EdgeInsets.only(left: 16),
-            child: Text('Patients', style: TextStyle(fontSize: 16),),
+            child: Text(
+              'Patients',
+              style: TextStyle(fontSize: 16),
+            ),
           ),
           Expanded(
             child: BlocBuilder<InpatientCubit, InpatientState>(
@@ -51,8 +60,9 @@ class InpatientList extends StatelessWidget {
                   return InpatientListView(
                     inpatients: state.inpatients,
                     hasReachedMax: state.hasReachedMax,
+                    inpatientCubit: inpatientCubit,
                     onScrollEnd: () {
-                      context.read<InpatientCubit>().loadMoreInpatients();
+                      inpatientCubit.loadMoreInpatients();
                     },
                   );
                 }
@@ -61,6 +71,7 @@ class InpatientList extends StatelessWidget {
                 } else if (state is InpatientSearchLoaded) {
                   return InpatientListView(
                     inpatients: state.inpatients,
+                    inpatientCubit: inpatientCubit,
                     hasReachedMax: true,
                     onScrollEnd: () {}, // No pagination for search results
                   );
@@ -91,12 +102,14 @@ class InpatientListView extends StatelessWidget {
   final List<Inpatient> inpatients;
   final bool hasReachedMax;
   final VoidCallback onScrollEnd;
+  final InpatientCubit inpatientCubit;
 
   const InpatientListView({
     super.key,
     required this.inpatients,
     required this.hasReachedMax,
     required this.onScrollEnd,
+    required this.inpatientCubit,
   });
 
   @override
@@ -118,6 +131,11 @@ class InpatientListView extends StatelessWidget {
               return const Center(child: CircularProgressIndicator());
             }
             final inpatient = inpatients[index];
+            final bool isSelected = inpatientCubit.state is InpatientLoaded &&
+                (inpatientCubit.state as InpatientLoaded)
+                        .selectedInpatient
+                        ?.id ==
+                    inpatient.id;
             return Column(
               children: [
                 PatientCard(
@@ -125,8 +143,9 @@ class InpatientListView extends StatelessWidget {
                   sex: inpatient.gender,
                   age: inpatient.age,
                   inpatient: inpatient,
-                  onSelected: (isSelected) {
-                    // Handle selection logic here if needed
+                  isSelected: isSelected,
+                  onSelected: () {
+                    inpatientCubit.selectInpatient(inpatient);
                   },
                 ),
                 const SizedBox(
@@ -140,84 +159,81 @@ class InpatientListView extends StatelessWidget {
     );
   }
 }
- 
 
- //TODO: to be removed
-class PatientCard extends StatefulWidget {
+//TODO: to be removed
+class PatientCard extends StatelessWidget {
   final String name;
   final String sex;
   final int age;
-  final ValueChanged<bool> onSelected;
+  final VoidCallback onSelected;
   final Inpatient inpatient;
+  final bool isSelected;
 
-  PatientCard(
-      {required this.name,
-      required this.sex,
-      required this.age,
-      required this.onSelected,
-      required this.inpatient});
-
-  @override
-  _PatientCardState createState() => _PatientCardState();
-}
-
-class _PatientCardState extends State<PatientCard> {
-  bool isSelected = false;
+  const PatientCard({
+    super.key,
+    required this.name,
+    required this.sex,
+    required this.age,
+    required this.onSelected,
+    required this.inpatient,
+    this.isSelected = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                InpatientDetailScreen(inpatient: widget.inpatient),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) =>
+        //         InpatientDetailScreen(inpatient: widget.inpatient),
+        //   ),
+        // );
+        onSelected();
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 6),
         child: Container(
           width: double.infinity,
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: isSelected ? Color(0xFF3579F8) : Colors.white,
+            color: isSelected ? const Color(0xFF3579F8).withOpacity(0.1) : Colors.white,
             borderRadius: BorderRadius.circular(4),
           ),
           child: Row(
             children: [
               CircleAvatar(
                 radius: 38,
-                backgroundColor: Color(0xFFF2F2F2),
+                backgroundColor: const Color(0xFFF2F2F2),
                 child: Icon(Icons.person, size: 60, color: Colors.grey[350]),
               ),
-              SizedBox(width: 28),
+              const SizedBox(width: 28),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.name,
-                    style: TextStyle(
+                    name,
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: isSelected ? Colors.white : Colors.black,
+                      color: Colors.black,
                     ),
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Text(
-                    'Sex: ${widget.sex}',
-                    style: TextStyle(
+                    'Sex: $sex',
+                    style: const TextStyle(
                       fontSize: 14,
-                      color: isSelected ? Colors.white70 : Colors.grey,
+                      color: Colors.grey,
                     ),
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Text(
-                    'Age: ${widget.age}',
-                    style: TextStyle(
+                    'Age: $age',
+                    style: const TextStyle(
                       fontSize: 14,
-                      color: isSelected ? Colors.white70 : Colors.grey,
+                      color: Colors.grey,
                     ),
                   ),
                 ],

@@ -1,16 +1,10 @@
-# inpatient_care_mobile_app
+# Inpatient Care Mobile App
 
-A new Flutter project.
+## Description
 
-## Getting Started
+This is the mobile application that will be used by nurses and doctors to monitor and manage inpatients.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Task distribution
+### Patient and Tv App (Patients need monitor App development) Module was assigned to Shama Issack Chewes
+### Nurse and Doctor App development Module was assigned to Nsajigwa Atupele
+### Backend and API integration Module was assigned to Yusuph Rajabu Abdallah (2021-04-00036)

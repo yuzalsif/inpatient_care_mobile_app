@@ -22,8 +22,11 @@ class InpatientLoaded extends InpatientState {
   /// Indicates if the list has reached its maximum length (i.e., no more inpatients to load).
   final bool hasReachedMax;
 
+  final Inpatient? selectedInpatient;
+
   const InpatientLoaded({
     required this.inpatients,
+    this.selectedInpatient,
     required this.hasReachedMax,
   });
 
@@ -31,15 +34,17 @@ class InpatientLoaded extends InpatientState {
   InpatientLoaded copyWith({
     List<Inpatient>? inpatients,
     bool? hasReachedMax,
+    Inpatient? selectedInpatient,
   }) {
     return InpatientLoaded(
       inpatients: inpatients ?? this.inpatients,
+      selectedInpatient: selectedInpatient ?? this.selectedInpatient,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
     );
   }
 
   @override
-  List<Object?> get props => [inpatients, hasReachedMax];
+  List<Object?> get props => [inpatients, hasReachedMax, selectedInpatient];
 }
 
 /// The state when a search for inpatients is being performed.

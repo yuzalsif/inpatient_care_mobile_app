@@ -14,6 +14,7 @@ dependencies:
     path: ../inpatient_api
   domain_models:
     path: ../domain_models  
+  rxdart: ^0.28.0
 
 dev_dependencies:
   flutter_test:

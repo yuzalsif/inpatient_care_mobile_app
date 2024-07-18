@@ -8,7 +8,7 @@ class Inpatient extends Equatable {
   final String address;
   final String phoneNumber;
 
-  Inpatient({
+  const Inpatient({
     required this.id,
     required this.name,
     required this.age,

@@ -1,5 +1,4 @@
 name: inpatient_care_mobile_app
-description:
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -17,15 +16,33 @@ dependencies:
     path: packages/inpatient_api
   user_repository:
     path: packages/user_repository
+  inpatient_repository:
+    path: packages/inpatient_repository
+  ipd_repository:
+    path: packages/ipd_repository
   sign_in:
     path: packages/features/sign_in
+  investigation:
+    path: packages/features/investigation
+  nurse_treatment_sheet:
+    path: packages/features/nurse_treatment_sheet
+  special:
+    path: packages/features/special
   patient_list:
-    path: packages/features/patient_list  
+    path: packages/features/patient_list
+  summary:
+    path: packages/features/summary
+  management:
+    path: packages/features/management
+  observation_chart:
+    path: packages/features/observation_chart
   domain_models:
     path: packages/domain_models
   component_library:
     path: packages/component_library
   google_fonts: ^6.2.1
+  flutter_svg: ^2.0.10+1
+  url_launcher: ^6.3.0
 
 
 dev_dependencies:
@@ -35,5 +52,9 @@ dev_dependencies:
 
 
 flutter:
+
+  assets:
+    - assets/images/
+    - assets/icons/
 
   uses-material-design: true

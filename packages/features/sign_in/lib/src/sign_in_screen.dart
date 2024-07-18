@@ -39,6 +39,9 @@ class SignInView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    final bool isTabletView = DeviceSize(width: width).isTablet;
+
     return GestureDetector(
       onTap: () => _releaseFocus(context),
       child: Scaffold(
@@ -47,32 +50,35 @@ class SignInView extends StatelessWidget {
             padding: const EdgeInsets.symmetric(
               horizontal: Spacing.mediumLarge,
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Sign In',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+            child: SizedBox(
+              width: isTabletView ? 520 : null,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Sign In',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: Spacing.small,
-                ),
-                const Text(
-                  'Welcome back! Please sign in to continue.',
-                  style: TextStyle(
-                    color: Colors.grey,
+                  const SizedBox(
+                    height: Spacing.small,
                   ),
-                ),
-                const SizedBox(
-                  height: Spacing.xxxLarge,
-                ),
-                _SignInForm(
-                  onSignInSuccess: onSignInSuccess,
-                ),
-              ],
+                  const Text(
+                    'Welcome back! Please sign in to continue.',
+                    style: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: Spacing.xxxLarge,
+                  ),
+                  _SignInForm(
+                    onSignInSuccess: onSignInSuccess,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

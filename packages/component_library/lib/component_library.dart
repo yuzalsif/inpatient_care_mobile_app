@@ -7,3 +7,7 @@ export 'src/special_field.dart';
 export 'src/theme/spacing.dart';
 export 'src/generic_error_snack_bar.dart';
 export 'src/expanded_elevated_button.dart';
+export 'src/theme/device_size.dart';
+export 'src/theme/container_size.dart';
+export 'src/custom_input_text_field.dart';
+export 'src/custom_drop_down_menu.dart';

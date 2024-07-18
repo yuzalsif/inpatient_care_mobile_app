@@ -56,6 +56,12 @@ class InpatientCubit extends Cubit<InpatientState> {
     }
   }
 
+  void selectInpatient(Inpatient inpatient) {
+    _inpatientRepository.selectInpatient(inpatient);
+    final newState = (state as InpatientLoaded).copyWith(selectedInpatient: inpatient);
+    emit(newState);
+  }
+
   void searchInpatients(String searchTerm) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 300), () async {
