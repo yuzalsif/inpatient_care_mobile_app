@@ -22,6 +22,7 @@ class ManagementScreen extends StatefulWidget {
 }
 
 class _ManagementScreenState extends State<ManagementScreen> {
+  bool isSubmitting = false;
   final TextEditingController _managementController = TextEditingController();
 
   @override
@@ -54,10 +55,16 @@ class _ManagementScreenState extends State<ManagementScreen> {
           const SizedBox(
             height: Spacing.xxLarge,
           ),
+          isSubmitting
+              ? RoundFormButton.inProgress(label: "Saving...")
+              :
           RoundFormButton(
             label: 'Add management',
             onPressed: () async {
               try {
+                setState(() {
+                  isSubmitting = true;
+                });
                 List<Order> orders = [];
                 final submissionTime = widget.ipdRepository.toIso8601WithMillis(DateTime.now());
 
@@ -116,6 +123,16 @@ class _ManagementScreenState extends State<ManagementScreen> {
                   authenticationToken: currentUserSessionId ?? '',
                   encounterUuid: encounterUuid,
                 );
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                      const SnackBar(
+                        content: Text('Saved data successfully'),
+                      )
+                  );
+                setState(() {
+                  isSubmitting = false;
+                });
               } catch (e) {
                 print("**********ERROR: $e");
               }

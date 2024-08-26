@@ -120,18 +120,18 @@ class SignInCubit extends Cubit<SignInState> {
   void onSubmit() async {
     final username = Username.validated(state.username.value);
     final password = Password.validated(state.password.value);
-    final url = Url.validated(state.baseUrl.value);
+    // final url = Url.validated(state.baseUrl.value);
 
     final isFormValid = Formz.validate([
       username,
       password,
-      url,
+      // url,
     ]);
 
     final newState = state.copyWith(
       username: username,
       password: password,
-      baseUrl: url,
+      // baseUrl: url,
       submissionStatus: isFormValid ? SubmissionStatus.inProgress : null,
     );
 
@@ -140,7 +140,7 @@ class SignInCubit extends Cubit<SignInState> {
     if (isFormValid) {
       try {
         await userRepository.signIn(
-          baseUrl: url.value,
+          baseUrl: '',
           username: username.value,
           password: password.value,
         );

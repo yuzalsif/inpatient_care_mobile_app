@@ -22,6 +22,7 @@ class InvestigationScreen extends StatefulWidget {
 }
 
 class _InvestigationScreenState extends State<InvestigationScreen> {
+  bool isSubmitting = false;
   final TextEditingController _testController = TextEditingController();
   final TextEditingController _remarksController = TextEditingController();
 
@@ -74,10 +75,16 @@ class _InvestigationScreenState extends State<InvestigationScreen> {
             height: Spacing.xxLarge,
           ),
           Center(
-              child: RoundFormButton(
+              child: isSubmitting
+                  ? RoundFormButton.inProgress(label: 'saving...')
+                  :
+              RoundFormButton(
                   label: "Request",
                   onPressed: () async {
                     try {
+                      setState(() {
+                        isSubmitting = true;
+                      });
                       List<Order> orders = [];
 
                       _testController.text != ''
@@ -120,6 +127,16 @@ class _InvestigationScreenState extends State<InvestigationScreen> {
 
                       await widget.ipdRepository.createEncounter(
                           encounter, currentUserSessionId ?? '');
+                      ScaffoldMessenger.of(context)
+                        ..hideCurrentSnackBar()
+                        ..showSnackBar(
+                            const SnackBar(
+                              content: Text('Saved data successfully'),
+                            )
+                        );
+                      setState(() {
+                        isSubmitting = false;
+                      });
                     } catch (e) {
                       print("**********ERROR: $e");
                     }

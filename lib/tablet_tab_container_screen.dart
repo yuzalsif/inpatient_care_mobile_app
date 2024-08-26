@@ -46,23 +46,23 @@ class _TabletTabContainerScreenState extends State<TabletTabContainerScreen> {
           ),
         ),
         toolbarHeight: 56,
-        actions: [
-          PopupMenuButton<String>(
-            icon: const Icon(Icons.more_vert_outlined),
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              const PopupMenuItem<String>(
-                value: 'logout',
-                child: ListTile(
-                  title: Text('Logout'),
-                  leading: Icon(Icons.logout_outlined),
-                ),
-              ),
-            ],
-            onSelected: (String value) {
-              // TODO: Handle menu item selection
-            },
-          ),
-        ],
+        // actions: [
+        //   PopupMenuButton<String>(
+        //     icon: const Icon(Icons.more_vert_outlined),
+        //     itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+        //       const PopupMenuItem<String>(
+        //         value: 'logout',
+        //         child: ListTile(
+        //           title: Text('Logout'),
+        //           leading: Icon(Icons.logout_outlined),
+        //         ),
+        //       ),
+        //     ],
+        //     onSelected: (String value) {
+        //       // TODO: Handle menu item selection
+        //     },
+        //   ),
+        // ],
       ),
       body: SafeArea(
         //TODO: USE BLOC HERE
@@ -239,8 +239,8 @@ class _TabletRHSTabContainerState extends State<TabletRHSTabContainer> {
               userRepository: widget.userRepository,
               selectedInpatient: widget.selectedInpatient,
             );
-          case 2:
-            return const SpecialScreen();
+          // case 2:
+          //   return const SpecialScreen();
           default:
             return NurseTreatmentSheetScreen(
               ipdRepository: widget.ipdRepository,
@@ -261,11 +261,11 @@ class _TabletRHSTabContainerState extends State<TabletRHSTabContainer> {
             icon: Icon(Icons.favorite),
             label: 'Vitals',
           ),
-          BottomNavigationBarItem(
-            // icon: SvgPicture.asset('assets/images/bed.svg'),
-            icon: Icon(Icons.bed),
-            label: 'Special',
-          ),
+          // BottomNavigationBarItem(
+          //   // icon: SvgPicture.asset('assets/images/bed.svg'),
+          //   icon: Icon(Icons.bed),
+          //   label: 'Special',
+          // ),
         ],
       ),
     );

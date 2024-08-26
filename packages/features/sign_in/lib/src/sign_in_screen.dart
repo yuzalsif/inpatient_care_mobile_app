@@ -200,9 +200,9 @@ class _SignInFormState extends State<_SignInForm> {
               obscureText: true,
               onEditingComplete: cubit.onSubmit,
               decoration: InputDecoration(
-                suffixIcon: const Icon(
-                  Icons.password,
-                ),
+                // suffixIcon: const Icon(
+                //   Icons.password,
+                // ),
                 border: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(8))),
                 enabled: !isSubmissionInProgress,
@@ -217,23 +217,23 @@ class _SignInFormState extends State<_SignInForm> {
             const SizedBox(
               height: Spacing.xLarge,
             ),
-            TextField(
-              focusNode: _urlFocusNode,
-              onChanged: cubit.onUrlChanged,
-              textInputAction: TextInputAction.next,
-              autocorrect: false,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8))),
-                enabled: !isSubmissionInProgress,
-                labelText: 'Url',
-                errorText: urlError == null
-                    ? null
-                    : (urlError == UrlValidationError.empty
-                        ? 'Base url can not be empty.'
-                        : 'Invalid Url'),
-              ),
-            ),
+            // TextField(
+            //   focusNode: _urlFocusNode,
+            //   onChanged: cubit.onUrlChanged,
+            //   textInputAction: TextInputAction.next,
+            //   autocorrect: false,
+            //   decoration: InputDecoration(
+            //     border: const OutlineInputBorder(
+            //         borderRadius: BorderRadius.all(Radius.circular(8))),
+            //     enabled: !isSubmissionInProgress,
+            //     labelText: 'Url',
+            //     errorText: urlError == null
+            //         ? null
+            //         : (urlError == UrlValidationError.empty
+            //             ? 'Base url can not be empty.'
+            //             : 'Invalid Url'),
+            //   ),
+            // ),
             const SizedBox(
               height: Spacing.xxLarge,
             ),
