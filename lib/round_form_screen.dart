@@ -29,7 +29,7 @@ class _RoundFormScreenState extends State<RoundFormScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         backgroundColor: const Color(0xFFF5F5F5),
         body: SingleChildScrollView(
@@ -45,7 +45,7 @@ class _RoundFormScreenState extends State<RoundFormScreen> {
               const SizedBox(height: Spacing.large),
               TabBar(
                 tabs: const [
-                  Text('Summary'),
+                  // Text('Summary'),
                   Text('Diagnosis'),
                   Text('Management'),
                 ],
@@ -64,7 +64,7 @@ class _RoundFormScreenState extends State<RoundFormScreen> {
                   padding: const EdgeInsets.only(
                       left: Spacing.xLarge, right: Spacing.xLarge),
                   child: TabBarView(children: [
-                    const SummaryScreen(),
+                    // const SummaryScreen(),
                     InvestigationScreen(
                       ipdRepository: widget.ipdRepository,
                       userRepository: widget.userRepository,
