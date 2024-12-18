@@ -1,0 +1,28 @@
+name: settings
+description: An application that used to pull messages from database and send the received messages to the recipients. Also sending incoming messages to the database, etc.
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.1.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  http: ^1.2.2
+  url_launcher: ^6.0.20
+  sms_receiver: ^0.4.1
+  background_sms: ^0.0.4
+  permission_handler: ^11.3.1
+  telephony: ^0.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true

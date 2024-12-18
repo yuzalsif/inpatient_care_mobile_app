@@ -36,6 +36,8 @@ dependencies:
     path: packages/features/management
   observation_chart:
     path: packages/features/observation_chart
+  settings:
+    path: packages/features/settings
   domain_models:
     path: packages/domain_models
   component_library:
