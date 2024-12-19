@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'style.dart';
 import 'IncomingMsgService.dart';
 import 'provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+//import 'package:logging/logging.dart';
+
+//final Logger _logger = Logger('ServerURLDialog');
 
 class SmsSetting extends StatefulWidget {
   const SmsSetting({super.key});
@@ -19,38 +23,69 @@ class _SmsSettingState extends State<SmsSetting> {
   bool _testMode = false;
   bool _networkFailover = false;
 
-
+//http://192.168.17.49:85/openmrs/ws/rest/v1/icare/envayasms/handle-actions
   String _selectedInterval = '30 sec'; // Default interval
-  String _serveUrl = 'http://192.168.17.49:85/openmrs/ws/rest/v1/icare/envayasms/handle-actions';
-  String _phoneNumber = '255689798797';
-  String _password = '123';
+  String _serveUrl = '';
+  String _phoneNumber = '';
+  String _password = '';
 
-  void _toggleSwitch(String switchName, bool value) {
+  @override
+  void initState() {
+    super.initState();
+    _loadPreferences(); // Load saved preferences
+  }
+
+  Future<void> _loadPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _enableIcareSMS = prefs.getBool('enableIcareSMS') ?? false;
+      _keepNewMessages = prefs.getBool('keepNewMessages') ?? false;
+      _callNotifications = prefs.getBool('callNotifications') ?? false;
+      _forwardSentMessages = prefs.getBool('forwardSentMessages') ?? false;
+      _testMode = prefs.getBool('testMode') ?? false;
+      _networkFailover = prefs.getBool('networkFailover') ?? false;
+      _selectedInterval = prefs.getString('pollInterval') ?? '30 sec';
+      _serveUrl = prefs.getString('serveUrl') ?? ''; // Correct key
+      _phoneNumber = prefs.getString('phoneNumber') ?? '';
+      _password = prefs.getString('password') ?? '';
+    });
+   // _logger.info('Loaded interval: $_selectedInterval');
+  }
+
+  void _toggleSwitch(String switchName, bool value) async {
+    final prefs = await SharedPreferences.getInstance();
     setState(() {
       switch (switchName) {
         case 'enableEnvayaSMS':
           _enableIcareSMS = value;
+          prefs.setBool('enableIcareSMS', value);
           break;
         case 'keepNewMessages':
           _keepNewMessages = value;
+          prefs.setBool('keepNewMessages', value);
           break;
         case 'callNotifications':
           _callNotifications = value;
+          prefs.setBool('callNotifications', value);
           break;
         case 'forwardSentMessages':
           _forwardSentMessages = value;
+          prefs.setBool('forwardSentMessages', value);
           break;
         case 'testMode':
           _testMode = value;
+          prefs.setBool('testMode', value);
           break;
         case 'networkFailover':
           _networkFailover = value;
+          prefs.setBool('networkFailover', value);
           break;
       }
     });
   }
 
-  void _showServerUrlDialog() {
+  void _showServerUrlDialog() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     final TextEditingController serverUrlController = TextEditingController(text: _serveUrl);
 
     showDialog(
@@ -67,6 +102,7 @@ class _SmsSettingState extends State<SmsSetting> {
                 decoration: const InputDecoration(
                   labelText: 'Server URL',
                 ),
+                keyboardType: TextInputType.url,
               ),
             ],
           ),
@@ -80,8 +116,9 @@ class _SmsSettingState extends State<SmsSetting> {
             TextButton(
               onPressed: () {
                 setState(() {
-                  _serveUrl = serverUrlController.text;
+                  _serveUrl = serverUrlController.text; // Update state
                 });
+                prefs.setString('serveUrl', _serveUrl); // Save with correct key
                 Navigator.of(context).pop(); // Dismiss the dialog after saving
               },
               child: const Text('OK'),
@@ -90,10 +127,13 @@ class _SmsSettingState extends State<SmsSetting> {
         );
       },
     );
+
+   // _logger.info('Saved Server URL: $_serveUrl');
+   // _logger.info('Loaded Server URL: ${prefs.getString('serveUrl')}');
   }
 
-
-  void _showPhoneNumberDialog() {
+  void _showPhoneNumberDialog() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     final TextEditingController phoneNumberController = TextEditingController(
       text: _phoneNumber,
     );
@@ -125,10 +165,11 @@ class _SmsSettingState extends State<SmsSetting> {
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
                 setState(() {
                   _phoneNumber = phoneNumberController.text;
                 });
+                prefs.setString('phoneNumber', _phoneNumber); // Save to SharedPreferences
+                Navigator.of(context).pop();
               },
               child: const Text('OK'),
             ),
@@ -145,7 +186,8 @@ class _SmsSettingState extends State<SmsSetting> {
     );
   }
 
-  void _showPasswordDialog() {
+  void _showPasswordDialog() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     final TextEditingController passwordController = TextEditingController(
       text: _password,
     );
@@ -179,10 +221,11 @@ class _SmsSettingState extends State<SmsSetting> {
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
                 setState(() {
                   _password = passwordController.text;
                 });
+                prefs.setString('password', _password); // Save to SharedPreferences
+                Navigator.of(context).pop();
               },
               child: const Text('OK'),
             ),
@@ -192,7 +235,8 @@ class _SmsSettingState extends State<SmsSetting> {
     );
   }
 
-  void _showPollIntervalDialog() {
+  void _showPollIntervalDialog() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     final List<String> intervals = ['5 sec', '15 sec', '30 sec', '1 min', '5 min', '10 min', '30 min'];
 
     showDialog(
@@ -210,9 +254,11 @@ class _SmsSettingState extends State<SmsSetting> {
                   title: Text(interval),
                   onTap: () {
                     setState(() {
-                      _selectedInterval = interval;
+                      _selectedInterval = interval; // Update the selected interval
+                     // _logger.info('Selected interval: $_selectedInterval');
                     });
-                    Navigator.of(context).pop();
+                    prefs.setString('pollInterval', _selectedInterval); // Save to SharedPreferences
+                    Navigator.of(context).pop(); // Close the dialog
                   },
                 );
               }).toList(),
@@ -221,7 +267,7 @@ class _SmsSettingState extends State<SmsSetting> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(); // Close the dialog without changes
               },
               child: const Text('Cancel'),
             ),
@@ -230,6 +276,7 @@ class _SmsSettingState extends State<SmsSetting> {
       },
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
