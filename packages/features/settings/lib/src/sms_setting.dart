@@ -304,9 +304,9 @@ class _SmsSettingState extends State<SmsSetting> {
               });
 
               if (value) {
-                // Call SMService.fetchSmsData() when the switch is turned on
-                SMService.fetchSmsData();
-                IncomingMsg().listenForIncomingSms();
+               // Call SMService.fetchSmsData() when the switch is turned on
+               SMService.fetchSmsData(_serveUrl);
+               IncomingMsg().listenForIncomingSms();
               }
             },
           ),
