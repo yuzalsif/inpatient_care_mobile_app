@@ -16,12 +16,14 @@ class TabletTabContainerScreen extends StatefulWidget {
   final UserRepository userRepository;
   final InpatientRepository inpatientRepository;
   final IpdRepository ipdRepository;
+  final Function() navigateToSettingScreen;
 
   const TabletTabContainerScreen({
     super.key,
     required this.userRepository,
     required this.inpatientRepository,
     required this.ipdRepository,
+    required this.navigateToSettingScreen
   });
 
   @override
@@ -46,23 +48,26 @@ class _TabletTabContainerScreenState extends State<TabletTabContainerScreen> {
           ),
         ),
         toolbarHeight: 56,
-        // actions: [
-        //   PopupMenuButton<String>(
-        //     icon: const Icon(Icons.more_vert_outlined),
-        //     itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-        //       const PopupMenuItem<String>(
-        //         value: 'logout',
-        //         child: ListTile(
-        //           title: Text('Logout'),
-        //           leading: Icon(Icons.logout_outlined),
-        //         ),
-        //       ),
-        //     ],
-        //     onSelected: (String value) {
-        //       // TODO: Handle menu item selection
-        //     },
-        //   ),
-        // ],
+        actions: [
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert_outlined),
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              const PopupMenuItem<String>(
+                value: 'sms_settings',
+                child: ListTile(
+                  title: Text('SMS Settings'),
+                  leading: Icon(Icons.sms_outlined),
+                ),
+              ),
+            ],
+            onSelected: (String value) {
+              // Navigate to LogViewScreen when "SMS Settings" is selected
+              if (value == 'sms_settings') {
+                widget.navigateToSettingScreen(); // Navigate to LogViewScreen
+              }
+            },
+          ),
+        ],
       ),
       body: SafeArea(
         //TODO: USE BLOC HERE

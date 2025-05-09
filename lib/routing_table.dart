@@ -11,6 +11,8 @@ import 'package:nurse_treatment_sheet/nurse_treatment_sheet.dart';
 import 'package:observation_chart/observation_chart.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:inpatient_repository/inpatient_repository.dart';
+import 'package:settings/settings.dart';
+
 
 Map<String, PageBuilder> buildRoutingTable({
   required RoutemasterDelegate routerDelegate,
@@ -27,6 +29,11 @@ Map<String, PageBuilder> buildRoutingTable({
                 inpatientRepository: inpatientRepository,
                 userRepository: userRepository,
                 ipdRepository: ipdRepository,
+                navigateToSettingScreen: () {
+                  routerDelegate.push(
+                    _PathConstants.logViewPath,
+                  );
+                },
               );
             },
           ),
@@ -88,6 +95,22 @@ Map<String, PageBuilder> buildRoutingTable({
             },
           ),
         ),
+    _PathConstants.logViewPath: (_) => MaterialPage(
+      name: 'log-view',
+      child: Builder(
+        builder: (context) {
+          return const LogViewScreen(); // Start with LogViewScreen
+        },
+      ),
+    ),
+    _PathConstants.settingsPath: (_) => MaterialPage(
+      name: 'settings',
+      child: Builder(
+        builder: (context) {
+          return const SmsSetting(); // Navigate to SettingsScreen
+        },
+      ),
+    ),
   };
 }
 
@@ -112,4 +135,8 @@ class _PathConstants {
 
   static String get mobileTabContainerSpecialPath =>
       '$mobileTabContainerPath/special';
+
+  static String get logViewPath => '/log-view';
+
+  static String get settingsPath => '/settings';
 }
